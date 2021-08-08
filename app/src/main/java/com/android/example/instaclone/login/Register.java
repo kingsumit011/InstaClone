@@ -1,5 +1,6 @@
 package com.android.example.instaclone.login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import com.android.example.instaclone.MainActivity;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +32,7 @@ public class Register extends AppCompatActivity {
     private Button signIn;
     private DatabaseReference myRef;
     private FirebaseAuth myAuth;
+    private ProgressDialog pd;
 
 
     @Override
@@ -69,11 +72,12 @@ public class Register extends AppCompatActivity {
         emailID =(EditText)findViewById(R.id.Input_Email_ID);
         password = findViewById(R.id.Input_Password);
         signIn = findViewById(R.id.SignIn);
-
+        pd = new ProgressDialog(this);
 
     }
 
     private void registerUser(String emailId, String password, String userName) {
+        pd.setMessage("Please Wait");
         myAuth.createUserWithEmailAndPassword(emailId , password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -86,12 +90,23 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isComplete()){
+                            pd.dismiss();
                             Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Register.this , HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            finsh();
                         }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+    }
+
+    private void finsh() {
     }
 }

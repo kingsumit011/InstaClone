@@ -10,41 +10,42 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginTop="100dp"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
         <TextView
+            style="@style/logintitle"
             android:layout_width="350dp"
             android:layout_height="100dp"
-            style="@style/logintitle"
             android:text="@string/Instagram_Title"
             android:textAlignment="center"
-            android:textSize="60sp"
-            android:textColor="@color/Title" />
+            android:textColor="@color/Title"
+            android:textSize="60sp" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="45dp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/Login_main"
+                style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
-                style="@style/input"
                 android:text="@string/login" />
 
             <Button
                 android:id="@+id/SignIn_main"
+                style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/signin"
-                style="@style/input"/>
+                android:text="@string/signin" />
 
         </LinearLayout>
 
