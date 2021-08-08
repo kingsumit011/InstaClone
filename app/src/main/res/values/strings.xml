@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">InstaClone</string>
     <string name="Instagram_Title">Instagram</string>
+    <string name="email_address">Email Address</string>
+    <string name="password">password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="signin">SignIn</string>
+    <string name="login">Login</string>
+    <string name="user_name">User Name</string>
 </resources>

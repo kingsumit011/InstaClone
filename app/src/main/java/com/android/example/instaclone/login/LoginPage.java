@@ -1,12 +1,15 @@
-package com.android.example.instaclone;
+package com.android.example.instaclone.login;
 
 //import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.example.instaclone.R;
 
 public class LoginPage extends  AppCompatActivity{
     EditText input_Password , input_Email_Id ;
@@ -28,7 +31,7 @@ public class LoginPage extends  AppCompatActivity{
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(LoginPage.this , Register.class));
             }
         });
     }
