@@ -50,10 +50,10 @@ public class LoginPage extends  AppCompatActivity{
         });
     }
     private void initWidget(){
-        input_Email_Id = (EditText) findViewById(R.id.Input_Email_ID);
-        input_Password = (EditText) findViewById(R.id.Input_Password);
-        login = (Button)findViewById(R.id.Login);
-        signUp = (Button)findViewById(R.id.SignIn);
+        input_Email_Id =  findViewById(R.id.Input_Email_ID);
+        input_Password = findViewById(R.id.Input_Password);
+        login = findViewById(R.id.Login);
+        signUp =findViewById(R.id.SignIn);
     }
     private void loginUser(String emailId , String password){
         myAuth.signInWithEmailAndPassword(emailId,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
