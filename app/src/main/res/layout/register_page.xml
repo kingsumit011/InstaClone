@@ -50,9 +50,9 @@
             android:id="@+id/Input_Password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="@string/user_name"
+            android:hint="@string/password"
             android:inputType="textPassword"
-            android:autofillHints="Password"
+
             style="@style/input"
             android:background="#fafafa"
             />
