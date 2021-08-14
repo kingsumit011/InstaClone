@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.example.instaclone.MainActivity;
 import com.android.example.instaclone.R;
+import com.android.example.instaclone.StartActivity;
 import com.android.example.instaclone.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -92,7 +93,7 @@ public class Register extends AppCompatActivity {
                         if(task.isComplete()){
                             pd.dismiss();
                             Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Register.this , HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            startActivity(new Intent(Register.this , StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finsh();
                         }
                     }

@@ -3,19 +3,33 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Instaclone/app/src/main/res/drawable-anydpi/ic_action_favorite_border.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable-anydpi/ic_action_home.xml" value="0.25833333333333336" />
+        <entry key="..\:/Instaclone/app/src/main/res/drawable-anydpi/ic_action_person.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_chat_bubble_outline_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_favorite_red_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_home.xml" value="0.1585144927536232" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_main.xml" value="0.15896739130434784" />
-        <entry key="..\:/Instaclone/app/src/main/res/layout/bottom_navigation.xml" value="0.264" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_notification.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_search.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_start.xml" value="0.228125" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/bottom_navigation.xml" value="0.4" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_notification.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_profile.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_search.xml" value="0.176" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_start.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/layout_bottom_navigation.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/layout_profile_center.xml" value="0.176" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/layout_user_search_item.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/login_page.xml" value="0.15896739130434784" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/post_layout.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/register_page.xml" value="0.1598731884057971" />
         <entry key="..\:/Instaclone/app/src/main/res/menu/bootom_nav_bar.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/menu/bottom_nav_bar.xml" value="0.2421875" />
       </map>
     </option>
   </component>
