@@ -2,6 +2,7 @@ package com.android.example.instaclone.login;
 
 //import android.support.v7.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -60,9 +61,13 @@ public class LoginPage extends AppCompatActivity {
         signUp =findViewById(R.id.SignIn);
     }
     private void loginUser(String emailId , String password){
+        final ProgressDialog pb = new ProgressDialog(this);
+        pb.setMessage("Please Wait");
+        pb.show();
         myAuth.signInWithEmailAndPassword(emailId,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                pb.dismiss();
                 if(task.isSuccessful()){
                     Toast.makeText(LoginPage.this, "Login Succesful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginPage.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:id="@+id/post_layout"
+    android:gravity="center_horizontal">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/post_id_container"
+    style="@style/posttitle">
+
+    <ImageView
+        android:id="@+id/post_add_user_profile_photo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_action_person" />
+
+    <TextView
+        android:id="@+id/post_add_username"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/post_add_user_profile_photo"
+        android:text="@string/user_name" />
+
+    <ImageView
+        android:id="@+id/post_add_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_action_close" />
+
+</RelativeLayout>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/post_container">
+
+    <ImageView
+        android:id="@+id/post_add_con"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_action_person" />
+
+    <AutoCompleteTextView
+        android:id="@+id/post_add_discription"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/post_add_con"
+        android:background="@null"
+        android:maxLines="5"
+        android:paddingHorizontal="15dp"
+        android:paddingBottom="7dp"
+        android:text="Description"
+        android:textSize="20dp" />
+
+</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="@string/post"
+        android:padding="10dp"
+        android:id="@+id/post_add_post_button"
+        android:paddingHorizontal="20dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:background="@color/blue"/>
+
+
+
+</LinearLayout>

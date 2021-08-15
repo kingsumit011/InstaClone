@@ -120,7 +120,8 @@
             android:gravity="center"
             android:horizontalSpacing="1dp"
             android:numColumns="3"
-            android:stretchMode="columnWidth"/>
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="1dp"/>
 
     </LinearLayout>
 

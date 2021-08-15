@@ -10,8 +10,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
@@ -36,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#fafafa"
-            android:lines="1"
+
+            android:inputType="textEmailAddress"
             android:hint="@string/email_address" />
 
         <EditText
@@ -45,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#fafafa"
-            android:lines="1"
+            android:inputType="textPersonName"
             android:hint="@string/user_name" />
 
         <EditText

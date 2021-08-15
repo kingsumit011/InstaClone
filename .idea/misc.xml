@@ -12,12 +12,20 @@
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_favorite_red_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
+        <entry key="..\:/Instaclone/app/src/main/res/drawable/rectangle_black_border.xml" value="0.25833333333333336" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_add.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_home.xml" value="0.1585144927536232" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_main.xml" value="0.15896739130434784" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_main2.xml" value="0.228125" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_notification.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_post.xml" value="0.2" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_profile.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_search.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_start.xml" value="0.228125" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/bottom_navigation.xml" value="0.4" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_add.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_home.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_notification.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_profile.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_search.xml" value="0.176" />

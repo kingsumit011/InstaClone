@@ -29,15 +29,29 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_baseline_more_vert_24" />
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/post_container">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/post_con" />
+
+        <ImageView
+            android:id="@+id/post_con"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/ic_action_person" />
+
+        <TextView
+            android:id="@+id/post_discription"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:paddingBottom="7dp"
+            android:paddingHorizontal="10dp"
+            android:text="Description"
+            android:textSize="20dp"
+            android:layout_below="@id/post_con"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -55,11 +69,17 @@
             android:layout_marginStart="20dp"
             android:id="@+id/post_comment_button"
             android:src="@drawable/ic_baseline_chat_bubble_outline_24"/>
+
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/post_no_user_like"
         android:text="User Like"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:id="@+id/post_time"
+        android:text="3 DAY AGO"/>
 
 </LinearLayout>

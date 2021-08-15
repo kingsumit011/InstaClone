@@ -12,18 +12,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.example.instaclone.MainActivity;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.StartActivity;
-import com.android.example.instaclone.home.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.*;
-import com.google.firebase.*;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 
@@ -78,7 +76,9 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerUser(String emailId, String password, String userName) {
-        pd.setMessage("Please Wait");
+        final ProgressDialog pb = new ProgressDialog(this);
+        pb.setMessage("Please Wait");
+        pb.show();
         myAuth.createUserWithEmailAndPassword(emailId , password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
@@ -87,11 +87,14 @@ public class Register extends AppCompatActivity {
                 map.put("Password" , password);
                 map.put("UserName" , userName);
                 map.put("id" , myAuth.getCurrentUser().getUid());
+                map.put("Bio","");
+                map.put("Profileimg","Default");
                 myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isComplete()){
-                            pd.dismiss();
+                        pd.dismiss();
+                        if(task.isSuccessful()){
+
                             Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(Register.this , StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             finsh();

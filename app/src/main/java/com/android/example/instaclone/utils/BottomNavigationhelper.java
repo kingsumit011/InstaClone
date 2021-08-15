@@ -11,9 +11,9 @@ import androidx.fragment.app.*;
 
 import com.android.example.instaclone.Profile.ProfileFragment;
 import com.android.example.instaclone.R;
+import com.android.example.instaclone.add.PostActivity;
 import com.android.example.instaclone.home.HomeFragment;
 import com.android.example.instaclone.notification.NotificationFragment;
-import com.android.example.instaclone.search.SearchActivity;
 import com.android.example.instaclone.search.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -50,7 +50,7 @@ public class BottomNavigationhelper extends FragmentManager {
                         break;
                     case R.id.nav_add:
                         Log.d(TAG , "Start Add activity");
-                        context.startActivity(new Intent(context , SearchActivity.class));
+                        context.startActivity(new Intent(context , PostActivity.class));
                         break;
                     case R.id.nav_notification:
 //                        context.startActivity(new Intent(context , SearchActivity.class));

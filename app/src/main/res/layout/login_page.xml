@@ -29,6 +29,7 @@
             android:layout_height="40dp"
             android:hint="@string/email_address"
             android:lines="1"
+            android:inputType="textEmailAddress"
             style="@style/input"
             android:background="#fafafa"
             />
