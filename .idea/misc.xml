@@ -38,6 +38,7 @@
         <entry key="..\:/Instaclone/app/src/main/res/layout/register_page.xml" value="0.1598731884057971" />
         <entry key="..\:/Instaclone/app/src/main/res/menu/bootom_nav_bar.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/menu/bottom_nav_bar.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/xml/file_path.xml" value="0.2421875" />
       </map>
     </option>
   </component>
@@ -46,5 +47,8 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="SuppressKotlinCodeStyleNotification">
+    <option name="disableForAll" value="true" />
   </component>
 </project>

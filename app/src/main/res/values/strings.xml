@@ -24,4 +24,7 @@
     <string name="posts">Posts</string>
     <string name="edit_bio_data">Edit Bio Data</string>
     <string name="post">Post</string>
+    <string name="file_provider" translatable="false">com.android.example.instaclone</string>
+
+    <string name="pick_single">Please select your image</string>
 </resources>

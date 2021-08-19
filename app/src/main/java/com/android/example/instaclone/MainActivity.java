@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-//import android.support.*;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.example.instaclone.login.LoginPage;
 import com.android.example.instaclone.login.Register;
-import com.google.firebase.FirebaseApp;
+
+//import android.support.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        startActivity(new Intent());
-        FirebaseApp.initializeApp(this);
+//        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
         Button login = (Button)findViewById(R.id.Login_main);
         Button register = (Button)findViewById(R.id.SignIn_main);

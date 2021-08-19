@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class Register extends AppCompatActivity {
 
     private EditText userName , emailID , password;
-    private Button signIn;
+    private Button signIn , signInGoogle;
     private DatabaseReference myRef;
     private FirebaseAuth myAuth;
     private ProgressDialog pd;
@@ -64,6 +64,17 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+
+//        signInGoogle.setOnClickListener((new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                GoogleSignInOptions gso = new GoogleSignInOptions
+//                        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                        .requestIdToken(getString(R.string.default_web_client_id))
+//                        .requestEmail()
+//                        .build();
+//            }
+//        }));
     }
 
     private void initWidgets() {
@@ -72,9 +83,11 @@ public class Register extends AppCompatActivity {
         password = findViewById(R.id.Input_Password);
         signIn = findViewById(R.id.SignIn);
         pd = new ProgressDialog(this);
-
+        signInGoogle = findViewById(R.id.sign_in_google);
     }
 
+
+    // Regester user by email id
     private void registerUser(String emailId, String password, String userName) {
         final ProgressDialog pb = new ProgressDialog(this);
         pb.setMessage("Please Wait");
@@ -112,5 +125,6 @@ public class Register extends AppCompatActivity {
     }
 
     private void finsh() {
+//        myAuth.signOut();
     }
 }

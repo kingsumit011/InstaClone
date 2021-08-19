@@ -55,7 +55,7 @@ android:id="@+id/post_layout"
         android:maxLines="5"
         android:paddingHorizontal="15dp"
         android:paddingBottom="7dp"
-        android:text="Description"
+        android:hint="Description"
         android:textSize="20dp" />
 
 </RelativeLayout>
