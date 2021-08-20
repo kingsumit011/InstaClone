@@ -55,6 +55,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation "androidx.fragment:fragment:1.3.6"
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'com.google.firebase:firebase-firestore:23.0.3'
     testImplementation 'junit:junit:4.13.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
@@ -68,5 +69,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
+//
+//    implementation "com.hendraanggrian.appcompat:socialview:$version" // base library
+//    implementation "com.hendraanggrian.appcompat:socialview-commons:$version" // auto-complete hashtag and mention
 }
 

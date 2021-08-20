@@ -96,12 +96,12 @@ public class Register extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
                 HashMap<String , Object> map = new HashMap<>();
-                map.put("EmailId" , emailId);
-                map.put("Password" , password);
-                map.put("UserName" , userName);
+                map.put("emailId" , emailId);
+                map.put("password" , password);
+                map.put("userName" , userName.toString());
                 map.put("id" , myAuth.getCurrentUser().getUid());
-                map.put("Bio","");
-                map.put("Profileimg","Default");
+                map.put("bio","");
+                map.put("profileimg","Default");
                 myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="100dp">
+
     <RelativeLayout
+        android:id="@+id/search_list_item"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:id="@+id/search_list_item"
-        android:gravity="center_vertical"
+        android:layout_alignParentStart="true"
 
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
         android:padding="15dp">
 
         <ImageView
-            android:id="@+id/search_user_id"
+            android:id="@+id/search_user_photo"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_action_person"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_action_person" />
 
         <TextView
             android:id="@+id/search_user_username"
@@ -24,9 +27,24 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="30dp"
-            android:layout_toEndOf="@id/search_user_id"
+            android:layout_marginEnd="84dp"
+            android:layout_toStartOf="@+id/followButton"
+            android:layout_toEndOf="@id/search_user_photo"
+            android:padding="2dp"
             android:text="UserName"
             android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/followButton"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@color/white"
+            android:text="@string/follow"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
     </RelativeLayout>
 
 

@@ -6,9 +6,6 @@
     tools:context="Profile.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
 
@@ -58,12 +55,13 @@
             android:id="@+id/profile_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/profile_toolbar_above">
+            android:layout_marginTop="50dp"
+            >
 
             <include layout="@layout/layout_profile_center" />
 
         </RelativeLayout>
-    </RelativeLayout>
+
 
 
 </FrameLayout>

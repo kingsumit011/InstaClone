@@ -89,7 +89,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
 //                User user = snapshot.getClass(User.class);
                 String userName = String.valueOf(snapshot.child("userName").getValue());
                 postUserName.setText(userName);
-                Uri profileUri = Uri.parse(String.valueOf(snapshot.child("Profileimg").getValue()));
+                Uri profileUri = Uri.parse(String.valueOf(snapshot.child("profileimg").getValue()));
                 Glide.with(PostActivity.this).load(profileUri).into(postUserImage);
             }
 
@@ -118,7 +118,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         Log.d(TAG , "Image uri " + uri.get(0).toString()+tag);
         imageUri = uri.get(0);
         Glide.with(PostActivity.this).load(imageUri).into(postImage);
-//        postImage.setImageURI(uri.get(0));
+
     }
     public void uploadPost(){
         ProgressDialog pd = new ProgressDialog(this);

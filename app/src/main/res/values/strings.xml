@@ -27,4 +27,6 @@
     <string name="file_provider" translatable="false">com.android.example.instaclone</string>
 
     <string name="pick_single">Please select your image</string>
+    <string name="follow">Follow</string>
+
 </resources>
