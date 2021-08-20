@@ -101,7 +101,7 @@ public class Register extends AppCompatActivity {
                 map.put("userName" , userName.toString());
                 map.put("id" , myAuth.getCurrentUser().getUid());
                 map.put("bio","");
-                map.put("profileimg","Default");
+                map.put("profileimg",R.drawable.ic_action_person);
                 myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

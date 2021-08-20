@@ -27,11 +27,11 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="84dp"
+            android:layout_marginEnd="30dp"
+            android:maxLines="1"
             android:layout_toStartOf="@+id/followButton"
             android:layout_toEndOf="@id/search_user_photo"
             android:padding="2dp"
-            android:text="UserName"
             android:textColor="@color/black" />
 
         <Button
@@ -43,6 +43,7 @@
             android:layout_marginEnd="10dp"
             android:background="@color/white"
             android:text="@string/follow"
+            android:padding="2dp"
             android:textColor="@color/blue"
             android:textSize="16sp" />
     </RelativeLayout>

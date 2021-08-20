@@ -129,7 +129,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
             StorageTask uploadTask = filePath.putFile(imageUri);
             uploadTask.continueWithTask(new Continuation() {
                 @Override
-                public Object then(@NonNull Task task) throws Exception {
+                public Object then(Task task) throws Exception {
                     if(!task.isSuccessful()){
                         throw task.getException();
                     }
@@ -137,7 +137,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                 }
             }).addOnCompleteListener(new OnCompleteListener() {
                 @Override
-                public void onComplete(@NonNull Task task) {
+                public void onComplete(Task task) {
                     Uri downLoaduri = (Uri) task.getResult();
                     imageUrl = downLoaduri.toString();
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
@@ -148,10 +148,11 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                     temp.put("description" , postDescription.getText().toString());
                     temp.put("publisher" , FirebaseAuth.getInstance().getCurrentUser().getUid());
                     ref.child(postId).setValue(temp);
+                    FirebaseDatabase.getInstance().getReference().child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Post").child(postId).setValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
+                public void onFailure( Exception e) {
                     Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener() {
