@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageTask;
 import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.kroegerama.imgpicker.ButtonType;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -120,6 +121,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         Glide.with(PostActivity.this).load(imageUri).into(postImage);
 
     }
+
     public void uploadPost(){
         ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Post is Uploading");
@@ -147,8 +149,8 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                     temp.put("imageUrl" , imageUrl);
                     temp.put("description" , postDescription.getText().toString());
                     temp.put("publisher" , FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    temp.put("time" , Calendar.getInstance().getTimeInMillis());
                     ref.child(postId).setValue(temp);
-                    FirebaseDatabase.getInstance().getReference().child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Post").child(postId).setValue(true);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

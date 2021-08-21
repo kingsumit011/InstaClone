@@ -34,7 +34,6 @@ public class SearchFragment extends Fragment {
     private static final String TAG= SearchFragment.class.toString();
 
     private RecyclerView mRecyclerView;
-
     private List<User> mUser;
     private UserAdapter mUserAdapter;
     private AutoCompleteTextView mSearchBar;

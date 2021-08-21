@@ -38,6 +38,7 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:hint="@string/search"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:paddingHorizontal="15dp"
                         android:textColor="@color/black"

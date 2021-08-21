@@ -34,12 +34,8 @@ public class BottomNavigationhelper extends FragmentManager {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
-//                android.app.FragmentManager fm = activity.getFragmentManager();
-//                Fragment fragment = null;
                 switch (id){
                     case R.id.nav_home:
-//                        context.startActivity(new Intent(context , HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
                            activity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag , new HomeFragment() ).commit();
 
                         break;
@@ -64,6 +60,8 @@ public class BottomNavigationhelper extends FragmentManager {
                         activity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag , new ProfileFragment() , null).commit();
                         break;
                     default:Log.e(TAG , "Error No item selected");
+                        activity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag , new HomeFragment() ).commit();
+
 
                 }
 

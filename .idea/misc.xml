@@ -11,6 +11,7 @@
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_favorite_red_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.25833333333333336" />
+        <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_instagram_icon.xml" value="0.25435897435897437" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/drawable/rectangle_black_border.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity.xml" value="0.2421875" />
@@ -31,7 +32,7 @@
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_start.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/layout_bottom_navigation.xml" value="0.2421875" />
-        <entry key="..\:/Instaclone/app/src/main/res/layout/layout_profile_center.xml" value="0.176" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/layout_profile_center.xml" value="0.2" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/layout_user_search_item.xml" value="0.4" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/login_page.xml" value="0.15896739130434784" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/post_layout.xml" value="0.2421875" />
