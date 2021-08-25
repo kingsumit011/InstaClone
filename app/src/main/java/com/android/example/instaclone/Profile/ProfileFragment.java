@@ -1,6 +1,7 @@
 package com.android.example.instaclone.Profile;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.android.example.instaclone.R;
+import com.android.example.instaclone.add.EditProfileDetails;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,9 +47,6 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-//    private void updatePost(View view) {
-//        GridAd
-//    }
 
     private void updatePage(View view) {
 
@@ -107,7 +106,7 @@ public class ProfileFragment extends Fragment {
         profile_edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                startActivity(new Intent(getContext() , EditProfileDetails.class));
             }
         });
     }

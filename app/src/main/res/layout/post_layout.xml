@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/rectangle_black_border"
+    android:id="@+id/post_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/post_layout"
     android:layout_marginBottom="20dp"
-    >
+    android:background="@drawable/rectangle_black_border"
+    android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/post_id_container"
+        style="@style/posttitle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/post_id_container"
-        android:background="@drawable/rectangle_black_border"
 
-        style="@style/posttitle">
+        android:background="@drawable/rectangle_black_border">
 
         <ImageView
             android:id="@+id/post_profile_photo"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/postUserName"
@@ -36,10 +37,11 @@
             android:src="@drawable/ic_baseline_more_vert_24" />
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/post_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/post_container"
 
         >
 
@@ -47,6 +49,7 @@
             android:id="@+id/post_con"
             android:layout_width="match_parent"
             android:layout_height="400dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_action_person" />
 
         <TextView
@@ -63,10 +66,11 @@
             android:textSize="20dp" />
 
     </RelativeLayout>
+
     <RelativeLayout
+        style="@style/posttitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/posttitle">
+        android:layout_height="wrap_content">
 
         <Button
 
@@ -84,17 +88,19 @@
             android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
     </RelativeLayout>
+
     <TextView
+        android:id="@+id/post_no_user_like"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/post_no_user_like"
         android:paddingHorizontal="10dp"
-        android:text="User Like"/>
+        android:text="User Like" />
+
     <TextView
+        android:id="@+id/post_time"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:id="@+id/post_time"
         android:paddingHorizontal="10dp"
-        android:text="3 DAY AGO"/>
+        android:text="3 DAY AGO" />
 
 </LinearLayout>

@@ -18,11 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.StartActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,12 +39,13 @@ import java.util.List;
 
 public class PostActivity extends AppCompatActivity implements BottomSheetImagePicker.OnImagesSelectedListener {
     private static final String TAG = PostActivity.class.toString();
-    private ImageView close , postImage , postUserImage;
+    private ImageView close, postImage, postUserImage;
     private Uri imageUri;
     private String imageUrl;
-    private TextView postUserName , postDescription , postButton;
+    private TextView postUserName, postDescription, postButton;
     private FirebaseUser firebaseUser;
     private String profileId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,18 +55,18 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
 
     }
 
-    private void init(){
+    private void init() {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PostActivity.this , StartActivity.class));
+                startActivity(new Intent(PostActivity.this, StartActivity.class));
                 finish();
             }
         });
         postImage.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG , "click on post image");
+                Log.d(TAG, "click on post image");
                 new BottomSheetImagePicker.Builder(getString(R.string.file_provider))
                         .cameraButton(ButtonType.Button)
                         .galleryButton(ButtonType.Button)
@@ -80,7 +78,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG , " Post is Uploding");
+                Log.d(TAG, " Post is Uploding");
                 uploadPost();
             }
         });
@@ -102,7 +100,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
 
     }
 
-    private void initWidgets(){
+    private void initWidgets() {
         close = findViewById(R.id.post_add_close);
         postImage = findViewById(R.id.post_add_con);
         postUserImage = findViewById(R.id.post_add_user_profile_photo);
@@ -116,61 +114,54 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
 
     @Override
     public void onImagesSelected(@NonNull List<? extends Uri> uri, @Nullable String tag) {
-        Log.d(TAG , "Image uri " + uri.get(0).toString()+tag);
+        Log.d(TAG, "Image uri " + uri.get(0).toString() + tag);
         imageUri = uri.get(0);
         Glide.with(PostActivity.this).load(imageUri).into(postImage);
 
     }
 
-    public void uploadPost(){
+    public void uploadPost() {
         ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("Post is Uploading");
         pd.show();
-        if(imageUri != null){
+        if (imageUri != null) {
             final StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
             StorageTask uploadTask = filePath.putFile(imageUri);
-            uploadTask.continueWithTask(new Continuation() {
-                @Override
-                public Object then(Task task) throws Exception {
-                    if(!task.isSuccessful()){
-                        throw task.getException();
-                    }
-                    return filePath.getDownloadUrl();
+            uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
                 }
-            }).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(Task task) {
-                    Uri downLoaduri = (Uri) task.getResult();
-                    imageUrl = downLoaduri.toString();
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-                    String postId = ref.push().getKey();
-                    HashMap<String , Object> temp = new HashMap<>();
-                    temp.put("postId" , postId);
-                    temp.put("imageUrl" , imageUrl);
-                    temp.put("description" , postDescription.getText().toString());
-                    temp.put("publisher" , FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    temp.put("time" , Calendar.getInstance().getTimeInMillis());
-                    ref.child(postId).setValue(temp);
-                }
+                return filePath.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                Uri downLoaduri = (Uri) task.getResult();
+                imageUrl = downLoaduri.toString();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+                String postId = ref.push().getKey();
+                HashMap<String, Object> temp = new HashMap<>();
+                temp.put("postId", postId);
+                temp.put("imageUrl", imageUrl);
+                temp.put("description", postDescription.getText().toString());
+                temp.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                temp.put("time", Calendar.getInstance().getTimeInMillis());
+                ref.child(postId).setValue(temp);
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onFailure( Exception e) {
+                public void onFailure(Exception e) {
                     Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnSuccessListener(new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object o) {
                     Toast.makeText(PostActivity.this, "Post uploded", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(PostActivity.this , StartActivity.class));
+                    startActivity(new Intent(PostActivity.this, StartActivity.class));
                 }
             });
-        }else{
-            Log.e(TAG , "No post selected");
+        } else {
+            Log.e(TAG, "No post selected");
             Toast.makeText(this, "No photo selected", Toast.LENGTH_SHORT).show();
         }
 
     }
-
     private String getFileExtention(Uri uri) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(uri));
 

@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.instaclone.Adapter.UserAdapter;
 import com.android.example.instaclone.Model.User;
+import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
+import com.android.example.instaclone.utils.OnItemCustomClickListner;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,7 +33,7 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
-    private static final String TAG= SearchFragment.class.toString();
+    private static final String TAG = SearchFragment.class.toString();
 
     private RecyclerView mRecyclerView;
     private List<User> mUser;
@@ -39,11 +41,10 @@ public class SearchFragment extends Fragment {
     private AutoCompleteTextView mSearchBar;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        initWidget(view);
+        init(view);
 
         readUser();
         mRecyclerView.setAdapter(mUserAdapter);
@@ -63,15 +64,17 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
         return view;
     }
-    private void searchUser(String s){
+
+    private void searchUser(String s) {
         Query query = FirebaseDatabase.getInstance().getReference().child("User").orderByChild("userName").startAt(s).endAt(s + "\uf8ff");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUser.clear();
-                for(DataSnapshot dataSnapshot :snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     mUser.add(dataSnapshot.getValue(User.class));
                 }
                 mUserAdapter.notifyDataSetChanged();
@@ -89,7 +92,7 @@ public class SearchFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(TextUtils.isEmpty(mSearchBar.getText().toString())){
+                if (TextUtils.isEmpty(mSearchBar.getText().toString())) {
                     mUser.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         User user = dataSnapshot.getValue(User.class);
@@ -102,18 +105,27 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG , "Error" + error);
+                Log.e(TAG, "Error" + error);
             }
         });
     }
 
-    private void initWidget(View view){
+    private void init(View view) {
         mRecyclerView = view.findViewById(R.id.search_list_root_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mUser = new ArrayList<>();
-        mUserAdapter = new UserAdapter(getContext() , mUser , true);
+        mUserAdapter = new UserAdapter(getContext(), mUser, true, new OnItemCustomClickListner<User>() {
+            @Override
+            public void OnItemClick(User user) {
+                Bundle args = new Bundle();
+                args.putString("key", user.getId());
+                Fragment fragment = new SearchProfileFragment();
+                fragment.setArguments(args);
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+            }
+        });
         mSearchBar = view.findViewById(R.id.search_bar);
     }
 }

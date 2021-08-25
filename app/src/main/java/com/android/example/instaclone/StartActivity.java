@@ -30,5 +30,6 @@ public class StartActivity extends AppCompatActivity {
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);
+        bottomNavigationViewEx.setSelectedItemId(R.id.nav_home);
     }
 }

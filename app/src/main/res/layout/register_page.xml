@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,8 +34,8 @@
             android:layout_height="40dp"
             android:background="#fafafa"
 
-            android:inputType="textEmailAddress"
-            android:hint="@string/email_address" />
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/Input_User_Name"
@@ -44,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#fafafa"
-            android:inputType="textPersonName"
-            android:hint="@string/user_name" />
+            android:hint="@string/user_name"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/Input_Password"
@@ -63,11 +62,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signin" />
+
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/sign_in_google"
             style="@style/input"
-            android:text="SignInByGoogle"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SignInByGoogle" />
     </LinearLayout>
 </RelativeLayout>

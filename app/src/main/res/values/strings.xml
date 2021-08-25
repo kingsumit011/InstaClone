@@ -28,5 +28,7 @@
 
     <string name="pick_single">Please select your image</string>
     <string name="follow">Follow</string>
+    <string name="message">Message</string>
+    <string name="save">Save</string>
 
 </resources>

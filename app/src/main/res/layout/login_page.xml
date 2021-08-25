@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,34 +13,33 @@
         tools:ignore="MissingConstraints">
 
         <TextView
+            style="@style/logintitle"
             android:layout_width="350dp"
             android:layout_height="100dp"
-            style="@style/logintitle"
             android:text="@string/Instagram_Title"
             android:textAlignment="center"
-            android:textSize="60sp"
-            android:textColor="@color/Title" />
+            android:textColor="@color/Title"
+            android:textSize="60sp" />
 
 
         <EditText
             android:id="@+id/Input_Email_ID"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="@string/email_address"
-            android:lines="1"
-            android:inputType="textEmailAddress"
-            style="@style/input"
             android:background="#fafafa"
-            />
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
+            android:lines="1" />
 
         <EditText
             android:id="@+id/Input_Password"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:inputType="textPassword"
-            style="@style/input"
+            android:background="#fafafa"
             android:hint="@string/password"
-            android:background="#fafafa"/>
+            android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,29 +49,30 @@
 
             <Button
                 android:id="@+id/Login"
+                style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
-                style="@style/input"
                 android:text="@string/login" />
 
             <Button
                 android:id="@+id/SignIn"
+                style="@style/input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/signin"
-                style="@style/input"/>
+                android:text="@string/signin" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/forgot_PassWord"
+            style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
             android:gravity="center"
+            android:text="@string/forgot_password"
             android:textColor="@color/blue"
-            style="@style/input"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
     </LinearLayout>
 
 </RelativeLayout>

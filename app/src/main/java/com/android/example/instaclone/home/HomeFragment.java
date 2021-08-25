@@ -28,6 +28,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecycleView;
     private List<Post> mPost;
     private PostAdapter mPostAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,11 +40,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void addPost() {
-        FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("time").limitToFirst(50).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("time").
+                limitToFirst(50).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mPost.clear();
-                for(DataSnapshot snapshot1 : snapshot.getChildren()){
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Post post = snapshot1.getValue(Post.class);
                     mPost.add(post);
                 }
@@ -64,7 +66,7 @@ public class HomeFragment extends Fragment {
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext() , mPost , true);
+        mPostAdapter = new PostAdapter(getContext(), mPost, true);
         mRecycleView.setAdapter(mPostAdapter);
     }
 }

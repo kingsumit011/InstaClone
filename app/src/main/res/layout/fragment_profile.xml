@@ -3,72 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_constrainedWidth="true"
     tools:context="Profile.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
 
-            android:id="@+id/profile_toolbar_above"
+        android:id="@+id/profile_toolbar_above"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rectangle_black_border"
+
+        >
+
+        <androidx.appcompat.widget.Toolbar
+
+            android:id="@+id/profileToolBar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rectangle_black_border"
+            android:layout_height="wrap_content">
 
-            >
-
-            <androidx.appcompat.widget.Toolbar
-
-                android:id="@+id/profileToolBar"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:text="User Name"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="15dp"
-                        android:text="User Name"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+                <ImageView
+                    android:id="@+id/profileMenu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_baseline_more_vert_24" />
 
-                    <ImageView
-                        android:id="@+id/profileMenu"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="20dp"
-                        android:src="@drawable/ic_baseline_more_vert_24" />
-
-                </RelativeLayout>
+            </RelativeLayout>
 
 
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <RelativeLayout
-            android:id="@+id/profile_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            >
+    <RelativeLayout
+        android:id="@+id/profile_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
 
-            <include
-                layout="@layout/layout_profile_center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="0dp" />
+        <include layout="@layout/layout_profile_center"/>
 
-        </RelativeLayout>
 
+    </RelativeLayout>
 
 
 </FrameLayout>

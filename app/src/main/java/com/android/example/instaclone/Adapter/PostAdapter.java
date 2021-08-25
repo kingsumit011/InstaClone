@@ -26,11 +26,12 @@ import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     private static final String TAG = PostAdapter.class.toString();
-    private Context mContext;
-    private List<Post> mPostList;
-    private boolean isFragment;
+    private final Context mContext;
+    private final List<Post> mPostList;
+    private final boolean isFragment;
     private FirebaseUser firebaseUser;
     private boolean isLiked;
+
     public PostAdapter(Context mContext, List<Post> mPostList, boolean isFragment) {
         this.mContext = mContext;
         this.mPostList = mPostList;
@@ -40,7 +41,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =LayoutInflater.from(mContext).inflate(R.layout.post_layout,parent ,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.post_layout, parent, false);
 
         return new PostAdapter.viewHolder(view);
     }
@@ -62,35 +63,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG ," Eroor : " + error);
+                Log.e(TAG, " Eroor : " + error);
             }
         });
-        isLike(post.getPostId() , holder.postLikeButton , holder.postCountLike);
+        isLike(post.getPostId(), holder.postLikeButton, holder.postCountLike);
         holder.postLikeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isLiked){
+                if (isLiked) {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).removeValue();
-                }else{
+                } else {
                     FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).setValue(true);
                 }
             }
         });
     }
 
-    private void isLike(String id, Button postLikeButton , TextView postCountLike) {
+    private void isLike(String id, Button postLikeButton, TextView postCountLike) {
 
         FirebaseDatabase.getInstance().getReference().child("Likes").child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(firebaseUser.getUid()).exists()){
+                if (snapshot.child(firebaseUser.getUid()).exists()) {
                     postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_red_24);
-                    isLiked=true;
-                }else{
+                    isLiked = true;
+                } else {
                     postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
                     isLiked = false;
                 }
-                String likeCount = snapshot.getChildrenCount() +"Likes";
+                String likeCount = snapshot.getChildrenCount() + "Likes";
                 postCountLike.setText(likeCount);
             }
 
@@ -107,17 +108,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         return mPostList.size();
     }
 
-    public class viewHolder extends RecyclerView.ViewHolder{
-        private ImageView postProfilePhoto , postCon, postCommentButton;
-        private TextView postUserName , postDescription , postCountLike , postTime;
+    public class viewHolder extends RecyclerView.ViewHolder {
+        private ImageView postProfilePhoto, postCon, postCommentButton;
+        private TextView postUserName, postDescription, postCountLike, postTime;
         private Button postLikeButton;
+
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             init(itemView);
         }
 
         private void init(View itemView) {
-            postProfilePhoto =itemView.findViewById(R.id.post_profile_photo);
+            postProfilePhoto = itemView.findViewById(R.id.post_profile_photo);
             postCon = itemView.findViewById(R.id.post_con);
             postLikeButton = itemView.findViewById(R.id.post_like_button);
             postCommentButton = itemView.findViewById(R.id.post_comment_button);
