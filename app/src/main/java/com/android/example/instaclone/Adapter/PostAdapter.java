@@ -1,11 +1,13 @@
 package com.android.example.instaclone.Adapter;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.instaclone.Model.Post;
+import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +33,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     private final List<Post> mPostList;
     private final boolean isFragment;
     private FirebaseUser firebaseUser;
-    private boolean isLiked;
+    private long postDoubleClickLastTime;
+    private Activity mActivity;
 
-    public PostAdapter(Context mContext, List<Post> mPostList, boolean isFragment) {
+
+    public PostAdapter(Context mContext, List<Post> mPostList, Activity mActivity ,boolean isFragment) {
         this.mContext = mContext;
         this.mPostList = mPostList;
         this.isFragment = isFragment;
+        postDoubleClickLastTime = 0;
+        this.mActivity = mActivity;
     }
 
     @NonNull
@@ -54,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         holder.postTime.setText(post.getTimeDiff());
         Glide.with(holder.itemView).load(post.getImageUrl()).into(holder.postCon);
         String publisherID = post.getPublisher();
+
         FirebaseDatabase.getInstance().getReference().child("User").child(publisherID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,33 +74,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
                 Log.e(TAG, " Eroor : " + error);
             }
         });
-        isLike(post.getPostId(), holder.postLikeButton, holder.postCountLike);
-        holder.postLikeButton.setOnClickListener(new View.OnClickListener() {
+        holder.postUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLiked) {
-                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).removeValue();
-                } else {
-                    FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).setValue(true);
-                }
+                Bundle args = new Bundle();
+                args.putString("key", post.getPublisher());
+                Fragment fragment = new SearchProfileFragment();
+                fragment.setArguments(args);
+                mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
             }
         });
-    }
-
-    private void isLike(String id, Button postLikeButton, TextView postCountLike) {
-
-        FirebaseDatabase.getInstance().getReference().child("Likes").child(id).addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(firebaseUser.getUid()).exists()) {
-                    postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_red_24);
-                    isLiked = true;
+                    holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_red_24);
+                    holder.isLiked = true;
+
+                    Log.d(TAG, "Post is Liked");
                 } else {
-                    postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
-                    isLiked = false;
+                    holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
+                    holder.isLiked = false;
+                    Log.d(TAG, "Post is disLiked");
+
                 }
-                String likeCount = snapshot.getChildrenCount() + "Likes";
-                postCountLike.setText(likeCount);
+                String likeCount = snapshot.getChildrenCount() + (snapshot.getChildrenCount() > 1 ? "Likes" : "Like");
+                holder.postCountLike.setText(likeCount);
             }
 
             @Override
@@ -101,7 +108,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             }
         });
 
+        holder.postLikeButton.setOnClickListener(v -> {
+
+            if (holder.isLiked) {
+                FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).removeValue();
+                Log.d(TAG, post.getPostId() + " : Post is disliked by : " + firebaseUser.getUid());
+            } else {
+                FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).child(firebaseUser.getUid()).setValue(true);
+                Log.d(TAG, post.getPostId() + " : Post is liked by : " + firebaseUser.getUid());
+
+            }
+        });
+        holder.postCon.setOnClickListener(v -> {
+            if (System.currentTimeMillis() - postDoubleClickLastTime < 300) {
+                postDoubleClickLastTime = 0;
+                holder.postLikeButton.callOnClick();
+            } else {
+                postDoubleClickLastTime = System.currentTimeMillis();
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -109,9 +136,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        private ImageView postProfilePhoto, postCon, postCommentButton;
+        private ImageView postProfilePhoto, postCon, postCommentButton, postLikeButton, likeanimation;
+
         private TextView postUserName, postDescription, postCountLike, postTime;
-        private Button postLikeButton;
+        private boolean isLiked;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,12 +149,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         private void init(View itemView) {
             postProfilePhoto = itemView.findViewById(R.id.post_profile_photo);
             postCon = itemView.findViewById(R.id.post_con);
+            likeanimation = itemView.findViewById(R.id.like_animation);
             postLikeButton = itemView.findViewById(R.id.post_like_button);
             postCommentButton = itemView.findViewById(R.id.post_comment_button);
             postUserName = itemView.findViewById(R.id.postUserName);
             postDescription = itemView.findViewById(R.id.post_discription);
             postCountLike = itemView.findViewById(R.id.post_no_user_like);
             postTime = itemView.findViewById(R.id.post_time);
+            isLiked = false;
         }
     }
 }

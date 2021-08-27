@@ -41,13 +41,13 @@ public class HomeFragment extends Fragment {
 
     private void addPost() {
         FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("time").
-                limitToFirst(50).addValueEventListener(new ValueEventListener() {
+                limitToLast(50).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mPost.clear();
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     Post post = snapshot1.getValue(Post.class);
-                    mPost.add(post);
+                    mPost.add(0 , post);
                 }
                 mPostAdapter.notifyDataSetChanged();
 
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext(), mPost, true);
+        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(),true);
         mRecycleView.setAdapter(mPostAdapter);
     }
 }

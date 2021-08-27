@@ -52,6 +52,14 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_action_person" />
 
+        <ImageView
+            android:id="@+id/like_animation"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:alpha="0"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_favorite_red_24" />
+
         <TextView
             android:id="@+id/post_discription"
             android:layout_width="match_parent"
@@ -72,12 +80,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <ImageView
 
             android:id="@+id/post_like_button"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_baseline_favorite_border_24" />
+            android:layout_height="40dp" />
 
         <ImageView
             android:id="@+id/post_comment_button"

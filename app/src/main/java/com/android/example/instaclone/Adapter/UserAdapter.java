@@ -1,5 +1,6 @@
 package com.android.example.instaclone.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
     private boolean isFragment;
     private FirebaseUser firebaseUser;
     private OnItemCustomClickListner<User> listner;
-    public UserAdapter(Context mContext, List<User> mUserList, boolean isFragment , OnItemCustomClickListner<User> listner) {
+    public UserAdapter(Context mContext, List<User> mUserList, boolean isFragment , OnItemCustomClickListner<User> listner ) {
         this.mContext = mContext;
         this.mUserList = mUserList;
         this.isFragment = isFragment;
@@ -56,28 +57,26 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
         final User user = mUserList.get(position);
         holder.follow.setVisibility(View.VISIBLE);
         holder.userName.setText(user.getUserName());
+
         Glide.with(holder.itemView).load(user.getProfileimg()).into(holder.userProfilePhoto);
         isFollowed(user.getId(), holder.follow);
         if (user.getId().equals(firebaseUser.getUid())) {
             holder.follow.setVisibility(View.GONE);
         }
-        holder.follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.follow.getText().toString().equals("Follow")) {
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
-                            child("Following").child(user.getId()).setValue(true);
+        holder.follow.setOnClickListener(v -> {
+            if (holder.follow.getText().toString().equals("Follow")) {
+                FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
+                        child("Following").child(user.getId()).setValue(true);
 
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).
-                            child("Followers").child(firebaseUser.getUid()).setValue(true);
+                FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).
+                        child("Followers").child(firebaseUser.getUid()).setValue(true);
 
-                } else {
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
-                            child("Following").child(user.getId()).removeValue();
+            } else {
+                FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).
+                        child("Following").child(user.getId()).removeValue();
 
-                    FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).
-                            child("Followers").child(firebaseUser.getUid()).removeValue();
-                }
+                FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).
+                        child("Followers").child(firebaseUser.getUid()).removeValue();
             }
         });
     }

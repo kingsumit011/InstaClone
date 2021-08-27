@@ -7,13 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.instaclone.Adapter.ProfilePhotoAdapter;
+import com.android.example.instaclone.Model.Post;
 import com.android.example.instaclone.R;
+import com.android.example.instaclone.utils.OnItemCustomClickListner;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,13 +28,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SearchProfileFragment extends Fragment {
     private static final String TAG = SearchProfileFragment.class.toString();
+    private static final int SPAN = 2;
     private FirebaseUser firebaseUser;
     private ImageView userPhoto;
     private TextView postCount , followCount , followerCount,userbio , followButton , messageButon , userName;
-    private GridLayout gridLayout;
+    private RecyclerView photoLayout;
     private  String userId ;
+    private ProfilePhotoAdapter mAdapter;
+    private List<Post> mPostList;
 
 
     @Override
@@ -78,7 +88,7 @@ public class SearchProfileFragment extends Fragment {
                 Log.e(TAG , "error" + error);
             }
         });
-        getPostCount(view);
+        getPost(view);
         getFollowersCount(view);
     }
 
@@ -98,13 +108,20 @@ public class SearchProfileFragment extends Fragment {
         });
     }
 
-    private void getPostCount(View view) {
+    private void getPost(View view) {
         Query query = FirebaseDatabase.getInstance().getReference().child("Post").orderByChild("publisher");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int post_count = (int) snapshot.child(userId).getChildrenCount();
-
+                int post_count =0;
+                for(DataSnapshot snapshot1:snapshot.getChildren()){
+                    Post post=snapshot1.getValue(Post.class);
+                    if(post.getPublisher().equals(userId)){
+                        post_count++;
+                        mPostList.add(0 , post);
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
                 postCount.setText(String.valueOf(post_count));
             }
 
@@ -151,9 +168,24 @@ public class SearchProfileFragment extends Fragment {
         followerCount = view.findViewById(R.id.count_followers);
         followButton = view.findViewById(R.id.profile_search_follow_button);
         messageButon = view.findViewById(R.id.profile_search_message_buttom);
-        gridLayout = view.findViewById(R.id.profile_post);
+        photoLayout = view.findViewById(R.id.profile_post);
+        photoLayout.setLayoutManager(new GridLayoutManager(getContext() , SPAN));
         userbio = view.findViewById(R.id.user_bio_data);
         userName= view.findViewById(R.id.username);
+        mPostList = new ArrayList<>();
+        mAdapter =new ProfilePhotoAdapter(getContext() , mPostList ,new OnItemCustomClickListner<Post>() {
+            @Override
+            public void OnItemClick(Post user) {
+                Bundle args = new Bundle();
+                args.putString("key", user.getPublisher());
+                args.putString("position" , user.getPostId());
+                Fragment fragment = new PostZoomFragment();
+                fragment.setArguments(args);
+                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+            }
+
+        });
+        photoLayout.setAdapter(mAdapter);
     }
 
 }

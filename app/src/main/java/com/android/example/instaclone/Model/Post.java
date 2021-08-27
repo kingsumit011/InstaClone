@@ -11,7 +11,7 @@ public class Post {
     public Post(){
 
     }
-    public Post(String description, Long time, String imageUrl, String postId, String publisher) {
+    public Post(String description,  String imageUrl, String postId, String publisher ,Long time) {
         this.description = description;
         this.time = time;
         this.imageUrl = imageUrl;

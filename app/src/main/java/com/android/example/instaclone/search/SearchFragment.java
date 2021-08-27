@@ -20,6 +20,7 @@ import com.android.example.instaclone.Model.User;
 import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.utils.OnItemCustomClickListner;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -119,6 +120,9 @@ public class SearchFragment extends Fragment {
         mUserAdapter = new UserAdapter(getContext(), mUser, true, new OnItemCustomClickListner<User>() {
             @Override
             public void OnItemClick(User user) {
+                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                    return;
+                }
                 Bundle args = new Bundle();
                 args.putString("key", user.getId());
                 Fragment fragment = new SearchProfileFragment();
