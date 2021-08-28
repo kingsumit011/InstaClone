@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/post_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/post_id_container"
-        style="@style/posttitle"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_black_border"
+        android:backgroundTint="#e3f2fd">
 
-        <ImageView
-            android:id="@+id/post_add_user_profile_photo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_action_person" />
 
-        <TextView
-            android:id="@+id/post_add_username"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/post_add_user_profile_photo"
-            android:text="@string/user_name" />
 
-        <ImageView
-            android:id="@+id/post_add_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_action_close" />
+        <RelativeLayout
+            android:id="@+id/post_id_container"
+            style="@style/posttitle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/post_add_user_profile_photo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
 
+                android:src="@drawable/ic_action_person" />
+
+            <TextView
+                android:id="@+id/post_add_username"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@id/post_add_user_profile_photo"
+                android:gravity="center_vertical"
+                android:text="@string/user_name"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/post_add_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_action_close" />
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
     <RelativeLayout
         android:id="@+id/post_container"
         android:layout_width="wrap_content"
@@ -51,10 +67,11 @@
         <AutoCompleteTextView
             android:id="@+id/post_add_discription"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/post_add_con"
             android:background="@null"
             android:hint="Description"
+            android:inputType="textMultiLine"
             android:maxLines="5"
             android:paddingHorizontal="15dp"
             android:paddingBottom="7dp"

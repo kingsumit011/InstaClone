@@ -1,6 +1,7 @@
 package com.android.example.instaclone.Model;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class Post {
     private String description;
@@ -8,15 +9,17 @@ public class Post {
     private String imageUrl;
     private String postId;
     private String publisher;
+    private List<Comment> mList;
     public Post(){
 
     }
-    public Post(String description,  String imageUrl, String postId, String publisher ,Long time) {
+    public Post(String description,  String imageUrl, String postId, String publisher ,Long time , List<Comment> mList) {
         this.description = description;
         this.time = time;
         this.imageUrl = imageUrl;
         this.postId = postId;
         this.publisher = publisher;
+        this.mList = mList;
     }
 
     public String getDescription() {

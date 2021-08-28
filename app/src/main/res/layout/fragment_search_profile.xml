@@ -12,14 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/rectangle_black_border"
+        android:backgroundTint="#e3f2fd"
 
         >
 
         <androidx.appcompat.widget.Toolbar
 
-            android:id="@+id/profileToolBar"
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,7 +55,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
         android:orientation="vertical">
 
         <LinearLayout

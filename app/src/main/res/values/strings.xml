@@ -30,5 +30,8 @@
     <string name="follow">Follow</string>
     <string name="message">Message</string>
     <string name="save">Save</string>
+    <string name="title_activity_comment_acticity">CommentActicity</string>
+    <string name="comments">Comments</string>
+    <string name="add_a_comment">Add a comment...</string>
 
 </resources>

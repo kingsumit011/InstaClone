@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.example.instaclone.Model.User;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.StartActivity;
 import com.bumptech.glide.Glide;
@@ -21,6 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.kroegerama.imgpicker.ButtonType;
 
@@ -31,7 +36,8 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
     private TextView userName , saveButton;
     private AutoCompleteTextView bio;
     private ImageView profilePhoto ,close;
-    private String userid , profileimgUrl;
+    private String userid ;
+    private Uri  profileimgUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +49,11 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
         FirebaseDatabase.getInstance().getReference().child("User").child(userid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userName.setText(snapshot.child("userName").getValue().toString());
-
-                Glide.with(EditProfileDetails.this).load(Uri.parse(snapshot.child("profileimg").getValue().toString())).into(profilePhoto);
-                bio.setText(snapshot.child("bio").getValue().toString());
+                User user = snapshot.getValue(User.class);
+                userName.setText(user.getUserName());
+                profileimgUrl = Uri.parse(user.getProfileimg());
+                Glide.with(EditProfileDetails.this).load(profileimgUrl).into(profilePhoto);
+                bio.setText(user.getBio());
             }
 
             @Override
@@ -78,26 +85,44 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
     }
 
     private void updateProfile() {
-        FirebaseDatabase.getInstance().getReference().child("User").child(userid).child("profileimg").setValue(profileimgUrl);
-        FirebaseDatabase.getInstance().getReference().child("User").child(userid).child("bio").setValue(bio.getText().toString());
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("User").child(userid).child(System.currentTimeMillis() + "." + getFileExtention(profileimgUrl));
+        storageReference.putFile(profileimgUrl).continueWithTask(task -> {
+               if (!task.isSuccessful()) {
+                   throw task.getException();
+               }
+               return storageReference.getDownloadUrl();
+
+        }).addOnCompleteListener(task -> {
+            Uri downLoadUri = (Uri) task.getResult();
+            FirebaseDatabase.getInstance().getReference().child("User").child(userid).child("profileimg").setValue(downLoadUri.toString());
+            FirebaseDatabase.getInstance().getReference().child("User").child(userid).child("bio").setValue(bio.getText().toString());
+        }).addOnFailureListener(e ->
+                Log.e(TAG ,"Error : "+ e)
+        ).addOnSuccessListener(uri ->
+                Toast.makeText(EditProfileDetails.this, "Profile Updated", Toast.LENGTH_SHORT).show());
+
         startActivity(new Intent(EditProfileDetails.this , StartActivity.class));
 
     }
 
-    private void init(){
+    private void init() {
         userName = findViewById(R.id.username);
         close = findViewById(R.id.edit_close);
         bio = findViewById(R.id.profile_bio);
         profilePhoto = findViewById(R.id.profile_img);
         saveButton = findViewById(R.id.profile_save_button);
         userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        profileimgUrl = "default";
+
     }
 
     @Override
     public void onImagesSelected(@NonNull List<? extends Uri> list, @Nullable String s) {
         Log.d(TAG , "Uri of selected Photo "+ list.get(0).toString());
-        profileimgUrl = list.get(0).toString();
+        profileimgUrl = list.get(0);
         Glide.with(EditProfileDetails.this).load(list.get(0)).into(profilePhoto);
+    }
+    private String getFileExtention(Uri uri) {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(uri));
+
     }
 }

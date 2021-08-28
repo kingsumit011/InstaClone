@@ -12,10 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.instaclone.Adapter.ProfilePhotoAdapter;
+import com.android.example.instaclone.MainActivity;
 import com.android.example.instaclone.Model.Post;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.add.EditProfileDetails;
@@ -37,22 +41,38 @@ public class ProfileFragment extends Fragment {
     private static final int SPAN = 2;
     private static final String TAG = ProfileFragment.class.toString();
     private ArrayList<Post> postphoto;
-    private ImageView profileImg;
+    private ImageView profileImg , signOut;
     private TextView post_count_view , followers_count_view , count_following_view;
     private TextView bio_view , profile_edit_button , userName;
     private RecyclerView profile_post_view;
     private ProfilePhotoAdapter adapter;
+    private Toolbar toolbar;
+    private ActionMenuView menu;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        toolbar = view.findViewById(R.id.toolBar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //TODO
+//        menu = view.findViewById(R.id.profile_menu);
+//        menu.setActivated(true);
+//        menu.setOnMenuItemClickListener(item -> {
+//            int itemId = item.getItemId();
+//            switch (itemId){
+//                case R.id.signOUT:
+//                    FirebaseAuth.getInstance().signOut();
+//                    startActivity(new Intent(getContext() , MainActivity.class));
+//                    break;
+//            }
+//            return true;
+//        });
         init(view);
         initWidget(view);
         updatePage(view);
         // TODO updatePost
         return view;
     }
-
 
     private void updatePage(View view) {
 
@@ -120,6 +140,11 @@ public class ProfileFragment extends Fragment {
 
     private void initWidget(View view) {
         //Complete Edit bio
+        signOut.setOnClickListener(v->{
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getContext() , MainActivity.class));
+            getActivity().getFragmentManager().popBackStack();
+        });
         profile_edit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +164,7 @@ public class ProfileFragment extends Fragment {
         profile_post_view = view.findViewById(R.id.profile_post);
         profile_post_view.setLayoutManager(new GridLayoutManager(getContext() , SPAN));
         postphoto = new ArrayList<>();
+        signOut = view.findViewById(R.id.profileMenu);
         adapter =new ProfilePhotoAdapter(getContext() , postphoto ,new OnItemCustomClickListner<Post>() {
             @Override
             public void OnItemClick(Post user) {

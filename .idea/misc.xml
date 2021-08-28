@@ -16,6 +16,7 @@
         <entry key="..\:/Instaclone/app/src/main/res/drawable/rectangle_black_border.xml" value="0.25833333333333336" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_add.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/activity_comment_activity.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_edit_profile_details.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_home.xml" value="0.1585144927536232" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_main.xml" value="0.15896739130434784" />
@@ -26,11 +27,13 @@
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_search.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/activity_start.xml" value="0.228125" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/bottom_navigation.xml" value="0.4" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/comment_layout.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/content_comment_acticity.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_add.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_home.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_notification.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_post_zoom.xml" value="0.2265625" />
-        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_profile.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_search.xml" value="0.264" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_search_profile.xml" value="0.176" />
         <entry key="..\:/Instaclone/app/src/main/res/layout/fragment_start.xml" value="0.2421875" />
@@ -44,7 +47,9 @@
         <entry key="..\:/Instaclone/app/src/main/res/layout/register_page.xml" value="0.1598731884057971" />
         <entry key="..\:/Instaclone/app/src/main/res/menu/bootom_nav_bar.xml" value="0.2421875" />
         <entry key="..\:/Instaclone/app/src/main/res/menu/bottom_nav_bar.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/menu/profile_menu.xml" value="0.264" />
         <entry key="..\:/Instaclone/app/src/main/res/xml/file_path.xml" value="0.2421875" />
+        <entry key="..\:/Instaclone/app/src/main/res/xml/profile_setting.xml" value="0.2265625" />
       </map>
     </option>
   </component>

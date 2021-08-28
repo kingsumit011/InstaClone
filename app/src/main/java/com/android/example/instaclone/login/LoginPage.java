@@ -35,6 +35,7 @@ public class LoginPage extends AppCompatActivity {
         setContentView(R.layout.login_page);
         initWidget();
         myAuth = FirebaseAuth.getInstance();
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

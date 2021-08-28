@@ -2,6 +2,7 @@ package com.android.example.instaclone.Profile;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class PostZoomFragment extends Fragment {
     private RecyclerView mRecycleView;
     private List<Post> mPost;
     private PostAdapter mPostAdapter;
-    private String publisherID , postId;
+    private String publisherID, postId;
     private int position;
 
 
@@ -52,17 +53,24 @@ public class PostZoomFragment extends Fragment {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
 
                     Post post = snapshot1.getValue(Post.class);
-                    if(post.getPublisher().equals(publisherID))
-                    mPost.add(0 , post);
+
+                    if (post.getPublisher().equals(publisherID)) {
+                        mPost.add(0, post);
+                    }
 
                     position++;
 
-                    if(post.getPostId().equals(postId))
-                        position=0;
+                    if (post.getPostId().equals(postId)) {
+                        Log.d(TAG, "Post Found");
+                        position = 0;
+                    }
                 }
 
                 mPostAdapter.notifyDataSetChanged();
-                mRecycleView.scrollToPosition(position);
+                //TODO
+//                Log.d(TAG , "Post Found At position "+ position);
+//                mRecycleView.smoothScrollToPosition(position);
+
 
             }
 
@@ -76,10 +84,12 @@ public class PostZoomFragment extends Fragment {
     private void init(View view) {
         mRecycleView = view.findViewById(R.id.post_con);
         mRecycleView.setHasFixedSize(true);
-        mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecycleView.setLayoutManager(layoutManager);
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext(), mPost,getActivity() ,true);
+        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true);
         mRecycleView.setAdapter(mPostAdapter);
+
     }
 }

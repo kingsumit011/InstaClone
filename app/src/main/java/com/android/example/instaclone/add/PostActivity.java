@@ -14,12 +14,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.StartActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.kroegerama.imgpicker.ButtonType;
 
@@ -45,12 +43,20 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
     private TextView postUserName, postDescription, postButton;
     private FirebaseUser firebaseUser;
     private String profileId;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         initWidgets();
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         init();
 
     }
@@ -75,6 +81,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                         .show(getSupportFragmentManager(), null);
             }
         }));
+
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +89,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                 uploadPost();
             }
         });
+
         FirebaseDatabase.getInstance().getReference().child("User").child(profileId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -108,6 +116,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         postDescription = findViewById(R.id.post_add_discription);
         postButton = findViewById(R.id.post_add_post_button);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        toolbar = findViewById(R.id.toolBar);
         profileId = firebaseUser.getUid();
     }
 
@@ -125,9 +134,8 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         pd.setMessage("Post is Uploading");
         pd.show();
         if (imageUri != null) {
-            final StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
-            StorageTask uploadTask = filePath.putFile(imageUri);
-            uploadTask.continueWithTask(task -> {
+            StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
+             filePath.putFile(imageUri).continueWithTask(task -> {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }
@@ -144,17 +152,11 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
                 temp.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
                 temp.put("time", Calendar.getInstance().getTimeInMillis());
                 ref.child(postId).setValue(temp);
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(Exception e) {
-                    Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener() {
-                @Override
-                public void onSuccess(Object o) {
-                    Toast.makeText(PostActivity.this, "Post uploded", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(PostActivity.this, StartActivity.class));
-                }
+            }).addOnSuccessListener(o -> {
+                Toast.makeText(PostActivity.this, "Post uploded", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(PostActivity.this, StartActivity.class));
+            }).addOnFailureListener(e -> {
+                Toast.makeText(PostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             Log.e(TAG, "No post selected");
@@ -162,6 +164,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         }
 
     }
+
     private String getFileExtention(Uri uri) {
         return MimeTypeMap.getSingleton().getExtensionFromMimeType(this.getContentResolver().getType(uri));
 

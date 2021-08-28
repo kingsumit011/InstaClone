@@ -3,6 +3,7 @@ package com.android.example.instaclone.Adapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.instaclone.ListDisplay.CommentActivity;
 import com.android.example.instaclone.Model.Post;
 import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
@@ -74,32 +77,43 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
                 Log.e(TAG, " Eroor : " + error);
             }
         });
-        holder.postUserName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("key", post.getPublisher());
-                Fragment fragment = new SearchProfileFragment();
-                fragment.setArguments(args);
-                mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+
+        holder.postUserName.setOnClickListener(v -> {
+            if(post.getPublisher().equals(firebaseUser.getUid())){
+                Toast.makeText(mActivity.getApplicationContext(), "Yoc can't see your own Profile here \n Go to Profile menu", Toast.LENGTH_SHORT).show();
+                return;
             }
+            Bundle args = new Bundle();
+            args.putString("key", post.getPublisher());
+            Fragment fragment = new SearchProfileFragment();
+            fragment.setArguments(args);
+            mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
         });
+
         FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(firebaseUser.getUid()).exists()) {
                     holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_red_24);
                     holder.isLiked = true;
-
-                    Log.d(TAG, "Post is Liked");
                 } else {
                     holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
                     holder.isLiked = false;
-                    Log.d(TAG, "Post is disLiked");
-
                 }
-                String likeCount = snapshot.getChildrenCount() + (snapshot.getChildrenCount() > 1 ? "Likes" : "Like");
+                String likeCount = snapshot.getChildrenCount() + (snapshot.getChildrenCount() > 1 ? " Likes" : " Like");
                 holder.postCountLike.setText(likeCount);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        FirebaseDatabase.getInstance().getReference().child("Comment").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.postCountComment.setText(snapshot.getChildrenCount() + (snapshot.getChildrenCount() >1 ?" Comments" : " Comment"));
             }
 
             @Override
@@ -119,6 +133,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
             }
         });
+
         holder.postCon.setOnClickListener(v -> {
             if (System.currentTimeMillis() - postDoubleClickLastTime < 300) {
                 postDoubleClickLastTime = 0;
@@ -126,6 +141,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             } else {
                 postDoubleClickLastTime = System.currentTimeMillis();
             }
+        });
+
+        holder.postCommentButton.setOnClickListener(v -> {
+            Intent intent = new Intent(mContext , CommentActivity.class);
+            intent.putExtra("PostId" , post.getPostId());
+            intent.putExtra("Publisher" , post.getPublisher());
+            mContext.startActivity(intent);
         });
     }
 
@@ -138,7 +160,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     public class viewHolder extends RecyclerView.ViewHolder {
         private ImageView postProfilePhoto, postCon, postCommentButton, postLikeButton, likeanimation;
 
-        private TextView postUserName, postDescription, postCountLike, postTime;
+        private TextView postUserName, postDescription, postCountLike, postTime , postCountComment;
         private boolean isLiked;
 
         public viewHolder(@NonNull View itemView) {
@@ -156,6 +178,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             postDescription = itemView.findViewById(R.id.post_discription);
             postCountLike = itemView.findViewById(R.id.post_no_user_like);
             postTime = itemView.findViewById(R.id.post_time);
+            postCountComment = itemView.findViewById(R.id.post_no_user_comment);
             isLiked = false;
         }
     }

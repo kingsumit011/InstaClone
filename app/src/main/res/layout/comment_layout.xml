@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:backgroundTint="@color/white"
+    android:background="@drawable/rectangle_black_border">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/comment_user_photo"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rectangle_black_border"
+
+        android:src="@drawable/ic_action_person"
+        android:layout_margin="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_Con"
+        android:layout_gravity="center_vertical"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="20dp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="2dp"
+        android:id="@+id/comment_time"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textColor="@color/black"
+        android:paddingHorizontal="20dp"
+        android:textAlignment="textEnd"
+        android:text="3 DAY AGO" />
+
+</LinearLayout>

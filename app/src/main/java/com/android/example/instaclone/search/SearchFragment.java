@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,7 +48,8 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         init(view);
-
+        Toolbar toolbar = view.findViewById(R.id.toolBar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         readUser();
         mRecyclerView.setAdapter(mUserAdapter);
         mSearchBar.addTextChangedListener(new TextWatcher() {

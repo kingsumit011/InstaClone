@@ -3,25 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="Profile.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <com.google.android.material.appbar.AppBarLayout
 
-        android:id="@+id/profile_toolbar_above"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/rectangle_black_border"
-
-        >
 
         <androidx.appcompat.widget.Toolbar
-
-            android:id="@+id/profileToolBar"
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/rectangle_black_border"
+            android:backgroundTint="#e3f2fd">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -33,6 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="15dp"
+                    android:textStyle="bold"
                     android:text="User Name"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -44,13 +41,24 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_baseline_more_vert_24" />
+                    android:src="@drawable/ic_baseline_login_24"
+                    />
+
+                <androidx.appcompat.widget.ActionMenuView
+                    android:id="@+id/profile_menu1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    app:menu="@menu/profile_menu"
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
 
         </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/profile_container"

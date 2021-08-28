@@ -100,8 +100,12 @@
         android:id="@+id/post_no_user_like"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:text="User Like" />
+        android:paddingHorizontal="10dp" />
+    <TextView
+        android:id="@+id/post_no_user_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp" />
 
     <TextView
         android:id="@+id/post_time"

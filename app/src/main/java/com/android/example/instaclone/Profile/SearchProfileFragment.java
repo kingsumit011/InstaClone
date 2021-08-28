@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +50,8 @@ public class SearchProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_profile, container, false);
         init(view);
+        Toolbar toolbar = view.findViewById(R.id.toolBar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         userId = getArguments().getString("key");
         isFollowed(userId, followButton);
         initWidget(view);
@@ -109,14 +113,17 @@ public class SearchProfileFragment extends Fragment {
     }
 
     private void getPost(View view) {
-        Query query = FirebaseDatabase.getInstance().getReference().child("Post").orderByChild("publisher");
+        Query query = FirebaseDatabase.getInstance().getReference().child("Posts");
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int post_count =0;
+                mPostList.clear();
                 for(DataSnapshot snapshot1:snapshot.getChildren()){
                     Post post=snapshot1.getValue(Post.class);
+                    Log.d(TAG , " PostClass created");
                     if(post.getPublisher().equals(userId)){
+                        Log.d(TAG , " Post is Added in adapter");
                         post_count++;
                         mPostList.add(0 , post);
                     }
