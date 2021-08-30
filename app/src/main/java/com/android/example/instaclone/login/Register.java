@@ -24,15 +24,15 @@ import java.util.HashMap;
 
 public class Register extends AppCompatActivity {
 
-    private EditText userName , emailID , password;
-    private Button signIn , signInGoogle;
+    private EditText userName, emailID, password;
+    private Button signIn, signInGoogle;
     private DatabaseReference myRef;
     private FirebaseAuth myAuth;
     private ProgressDialog pd;
 
 
     @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_page);
         initWidgets();
@@ -40,7 +40,6 @@ public class Register extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference();
         myAuth = FirebaseAuth.getInstance();
         init();
-
 
 
     }
@@ -52,16 +51,16 @@ public class Register extends AppCompatActivity {
                 String txtuserName = userName.getText().toString();
                 String txtEmailId = emailID.getText().toString();
                 String txtPassword = password.getText().toString();
-                if(TextUtils.isEmpty(txtEmailId) || TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtuserName)){
+                if (TextUtils.isEmpty(txtEmailId) || TextUtils.isEmpty(txtPassword) || TextUtils.isEmpty(txtuserName)) {
                     Toast.makeText(Register.this, "Enter full Credential", Toast.LENGTH_SHORT).show();
-                }else if(txtPassword.length() <6){
+                } else if (txtPassword.length() < 6) {
                     Toast.makeText(Register.this, "Password Length To short", Toast.LENGTH_SHORT).show();
-                }else{
-                    registerUser(txtEmailId , txtPassword , txtuserName);
+                } else {
+                    registerUser(txtEmailId, txtPassword, txtuserName);
                 }
             }
         });
-            //TODO
+        //TODO
 //        signInGoogle.setOnClickListener((new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -75,8 +74,8 @@ public class Register extends AppCompatActivity {
     }
 
     private void initWidgets() {
-        userName = (EditText)findViewById(R.id.Input_User_Name);
-        emailID =(EditText)findViewById(R.id.Input_Email_ID);
+        userName = (EditText) findViewById(R.id.Input_User_Name);
+        emailID = (EditText) findViewById(R.id.Input_Email_ID);
         password = findViewById(R.id.Input_Password);
         signIn = findViewById(R.id.SignIn);
         pd = new ProgressDialog(this);
@@ -89,29 +88,29 @@ public class Register extends AppCompatActivity {
         final ProgressDialog pb = new ProgressDialog(this);
         pb.setMessage("Please Wait");
         pb.show();
-        myAuth.createUserWithEmailAndPassword(emailId , password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+        myAuth.createUserWithEmailAndPassword(emailId, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                HashMap<String , Object> map = new HashMap<>();
-                map.put("emailId" , emailId);
-                map.put("password" , password);
-                map.put("userName" , userName.toString());
-                map.put("id" , myAuth.getCurrentUser().getUid());
-                map.put("bio","");
-                map.put("profileimg",R.drawable.ic_action_person);
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("emailId", emailId);
+                map.put("password", password);
+                map.put("userName", userName);
+                map.put("id", myAuth.getCurrentUser().getUid());
+                map.put("bio", "");
+                map.put("profileimg", R.drawable.ic_action_person);
                 User user = new User(
-                        userName.toString(),
-                        "Hello " + userName.toString() + " Here",
-                        emailId.toString(),
-                        myAuth.getCurrentUser().getUid().toString(),
+                        userName,
+                        "Hello " + userName + " Here",
+                        emailId,
+                        myAuth.getCurrentUser().getUid(),
                         "https://image.flaticon.com/icons/png/512/21/21104.png"
                 );
-                myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task ->  {
+                myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task -> {
                     pd.dismiss();
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
 
                         Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Register.this , StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        startActivity(new Intent(Register.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         finsh();
                     }
                 }).addOnFailureListener(e -> {

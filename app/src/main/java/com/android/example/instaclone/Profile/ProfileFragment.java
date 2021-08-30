@@ -81,14 +81,14 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.profile_menu , menu);
+        inflater.inflate(R.menu.profile_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getContext(), MainActivity.class));
@@ -176,7 +176,7 @@ public class ProfileFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("User", FirebaseAuth.getInstance().getCurrentUser().getUid());
             bundle.putString("List", "Followers");
-            Navigation.findNavController(getView()).navigate(R.id.action_fragment_profile_to_fragment_FollowersFollowing , bundle);
+            Navigation.findNavController(getView()).navigate(R.id.action_fragment_profile_to_fragment_FollowersFollowing, bundle);
 
         });
 
@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("User", FirebaseAuth.getInstance().getCurrentUser().getUid());
             bundle.putString("List", "Following");
-            Navigation.findNavController(getView()).navigate(R.id.action_fragment_profile_to_fragment_FollowersFollowing , bundle);
+            Navigation.findNavController(getView()).navigate(R.id.action_fragment_profile_to_fragment_FollowersFollowing, bundle);
         }));
     }
 

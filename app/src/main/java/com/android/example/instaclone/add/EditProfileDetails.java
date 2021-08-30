@@ -112,7 +112,7 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
                 finish();//            startActivity(new Intent(EditProfileDetails.this, StartActivity.class));
 
             });
-        }else {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

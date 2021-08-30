@@ -23,9 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHolder> {
-    private static final String TAG= CommentAdapter.class.toString();
-    private Context mContext;
-    private List<Comment> mCommentList;
+    private static final String TAG = CommentAdapter.class.toString();
+    private final Context mContext;
+    private final List<Comment> mCommentList;
 
     public CommentAdapter(Context mContext, List<Comment> mCommentList) {
         this.mContext = mContext;
@@ -35,7 +35,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_layout , parent , false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.comment_layout, parent, false);
         return new viewHolder(view);
     }
 
@@ -50,7 +50,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG , " Error : " + error);
+                Log.e(TAG, " Error : " + error);
             }
         });
         holder.commentview.setText(comment.getCommentdata());
@@ -63,9 +63,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.viewHold
     }
 
 
-    public class viewHolder extends RecyclerView.ViewHolder{
-        private ImageView commentUserImage;
-        private TextView commentview , time;
+    public class viewHolder extends RecyclerView.ViewHolder {
+        private final ImageView commentUserImage;
+        private final TextView commentview;
+        private final TextView time;
+
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             commentview = itemView.findViewById(R.id.comment_Con);

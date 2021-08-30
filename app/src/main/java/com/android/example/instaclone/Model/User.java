@@ -2,13 +2,15 @@ package com.android.example.instaclone.Model;
 
 public class User {
 
-    private String userName , emailId , profileimg, bio ,id;
-    public User(){
+    private String userName, emailId, profileimg, bio, id;
+
+    public User() {
 
     }
-    public User( String UserName ,String Bio ,String EmailId , String id  ,  String imageURL){
+
+    public User(String UserName, String Bio, String EmailId, String id, String imageURL) {
         this.userName = UserName;
-        this.emailId =EmailId;
+        this.emailId = EmailId;
         this.profileimg = imageURL;
         this.bio = Bio;
         this.id = id;

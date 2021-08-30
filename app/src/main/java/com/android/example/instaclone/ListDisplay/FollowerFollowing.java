@@ -59,13 +59,13 @@ public class FollowerFollowing extends Fragment {
         mRecyclerView.hasFixedSize();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new UserAdapter(getContext(), mUserList, false, user -> {
-            if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+            if (user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 Toast.makeText(getContext(), "Can't See Your own Profile", Toast.LENGTH_SHORT).show();
                 return;
             }
             Bundle args = new Bundle();
             args.putString("key", user.getId());
-            Navigation.findNavController(getView()).navigate(R.id.action_fragment_FollowersFollowing_to_fragment_search_profile , args);
+            Navigation.findNavController(getView()).navigate(R.id.action_fragment_FollowersFollowing_to_fragment_search_profile, args);
         });
         mRecyclerView.setAdapter(mAdapter);
         FirebaseDatabase.getInstance().getReference().child("Follow").child(userId).child(list).addValueEventListener(new ValueEventListener() {
@@ -86,9 +86,10 @@ public class FollowerFollowing extends Fragment {
         });
 
         close.setOnClickListener(v -> {
-
+            getActivity().onBackPressed();
         });
     }
+
 
     private void addUser(String user) {
 

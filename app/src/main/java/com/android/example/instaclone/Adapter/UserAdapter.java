@@ -32,8 +32,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
     private final Context mContext;
     private final List<User> mUserList;
     private final boolean isFragment;
-    private FirebaseUser firebaseUser;
     private final OnItemCustomClickListner<User> listner;
+    private FirebaseUser firebaseUser;
 
     public UserAdapter(Context mContext, List<User> mUserList, boolean isFragment, OnItemCustomClickListner<User> listner) {
         this.mContext = mContext;

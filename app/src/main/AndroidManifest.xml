@@ -17,7 +17,7 @@
         <activity
             android:name=".StartActivity"
             android:exported="true"
-            android:theme="@style/Theme.InstaClone.NoActionBar"/>
+            android:theme="@style/Theme.InstaClone.NoActionBar" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         mRecycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true , view);
+        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true, view);
         mRecycleView.setAdapter(mPostAdapter);
     }
 }

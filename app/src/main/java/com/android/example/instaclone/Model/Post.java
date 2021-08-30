@@ -10,10 +10,12 @@ public class Post {
     private String postId;
     private String publisher;
     private List<Comment> mList;
-    public Post(){
+
+    public Post() {
 
     }
-    public Post(String description,  String imageUrl, String postId, String publisher ,Long time , List<Comment> mList) {
+
+    public Post(String description, String imageUrl, String postId, String publisher, Long time, List<Comment> mList) {
         this.description = description;
         this.time = time;
         this.imageUrl = imageUrl;
@@ -31,7 +33,7 @@ public class Post {
     }
 
     public Long getTime() {
-        if(time == null ){
+        if (time == null) {
             return Long.valueOf(0);
         }
         return time;
@@ -64,24 +66,25 @@ public class Post {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-    public String getTimeDiff(){
-        String ans ="";
-        long millse = Calendar.getInstance().getTimeInMillis()-getTime() ;
+
+    public String getTimeDiff() {
+        String ans = "";
+        long millse = Calendar.getInstance().getTimeInMillis() - getTime();
         long mills = Math.abs(millse);
-        int Years = (int) (mills/(1000*60*60*24)*365);
-        int Days = (int) (mills/(1000*60*60*24)%365);
-        int Hours = (int) (mills/(1000 * 60 * 60)%24);
-        int Mins = (int) (mills/(1000*60) % 60);
+        int Years = (int) (mills / (1000 * 60 * 60 * 24) * 365);
+        int Days = (int) (mills / (1000 * 60 * 60 * 24) % 365);
+        int Hours = (int) (mills / (1000 * 60 * 60) % 24);
+        int Mins = (int) (mills / (1000 * 60) % 60);
         int Secs = (int) ((mills / 1000) % 60);
-        if(Years >0 && Years < 10){
+        if (Years > 0 && Years < 10) {
             ans = Years + " years ago";
-        }else if(Days != 0){
+        } else if (Days != 0) {
             ans = Days + " days ago";
-        }else if(Hours != 0){
+        } else if (Hours != 0) {
             ans = Hours + " hours ago";
-        }else if(Mins != 0 ){
-            ans = Mins +" mins ago";
-        }else{
+        } else if (Mins != 0) {
+            ans = Mins + " mins ago";
+        } else {
             ans = Secs + " secs ago";
         }
         return ans;

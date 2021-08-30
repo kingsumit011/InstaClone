@@ -36,10 +36,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     private final Context mContext;
     private final List<Post> mPostList;
     private final boolean isFragment;
-    private FirebaseUser firebaseUser;
-    private long postDoubleClickLastTime;
     private final Activity mActivity;
     private final View view;
+    private FirebaseUser firebaseUser;
+    private long postDoubleClickLastTime;
 
 
     public PostAdapter(Context mContext, List<Post> mPostList, Activity mActivity, boolean isFragment, View view) {
@@ -149,9 +149,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         holder.postCommentButton.setOnClickListener(v -> {
 
             Bundle bundle = new Bundle();
-            bundle.putString("PostId" , post.getPostId());
-            bundle.putString("Publisher" , post.getPublisher());
-            Navigation.findNavController(view).navigate(R.id.action_fragment_home_to_fragment_Comment , bundle);
+            bundle.putString("PostId", post.getPostId());
+            bundle.putString("Publisher", post.getPublisher());
+            Navigation.findNavController(view).navigate(R.id.action_fragment_home_to_fragment_Comment, bundle);
         });
 
         holder.setting.setOnClickListener(v -> {
@@ -183,29 +183,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
-//        Bitmap theBitmap = Glide.
-//                with(mContext).
-//                load("http://....").
-//                asBitmap().
-//                into(100, 100). // Width and height
-//                get();
-//        Glide.with(mContext).load(Uri.parse(post.getImageUrl())).into(
-//                new CustomTarget<Drawable>() {
-//                    @Override
-//                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                        shareIntent.putExtra(Intent.EXTRA_STREAM, "android.resource://" + mActivity.getPackageName()
-//                                + resource + "ic_launcher");
 //
-//                    }
-//
-//                    @Override
-//                    public void onLoadCleared(@Nullable Drawable placeholder) {
-//
-//                    }
-//                }
-//        );
-        shareIntent.putExtra(Intent.EXTRA_STREAM , Uri.parse(post.getImageUrl()));
-        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(post.getImageUrl()));
+        shareIntent.setType("image/**");
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         mActivity.startActivity(Intent.createChooser(shareIntent, "send"));
     }

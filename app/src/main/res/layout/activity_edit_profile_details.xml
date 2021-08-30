@@ -18,9 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
+            android:text="@string/user_name"
             android:textColor="@color/black"
-            android:textSize="17dp"
-            android:text="@string/user_name" />
+            android:textSize="17dp" />
 
         <ImageView
             android:id="@+id/edit_close"
@@ -48,12 +48,12 @@
         <AutoCompleteTextView
             android:id="@+id/profile_bio"
             android:layout_width="match_parent"
-            android:minHeight="20dp"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:maxLines="5"
-            android:maxLength="100"
             android:inputType="textMultiLine"
+            android:maxLength="100"
+            android:maxLines="5"
+            android:minHeight="20dp"
             android:paddingHorizontal="15dp"
             android:paddingBottom="7dp"
             android:textSize="20dp" />

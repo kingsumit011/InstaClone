@@ -3,9 +3,9 @@
 
     <item
         android:id="@+id/delete_post"
-        android:title="@string/delete_post"/>
+        android:title="@string/delete_post" />
     <item
         android:id="@+id/share_post"
-        android:title="@string/share_post"/>
+        android:title="@string/share_post" />
 
 </menu>

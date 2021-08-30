@@ -49,7 +49,7 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         init(view);
         Toolbar toolbar = view.findViewById(R.id.toolBar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         readUser();
         mRecyclerView.setAdapter(mUserAdapter);
         mSearchBar.addTextChangedListener(new TextWatcher() {
@@ -123,12 +123,12 @@ public class SearchFragment extends Fragment {
         mUserAdapter = new UserAdapter(getContext(), mUser, true, new OnItemCustomClickListner<User>() {
             @Override
             public void OnItemClick(User user) {
-                if(user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                if (user.getId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                     return;
                 }
                 Bundle args = new Bundle();
                 args.putString("key", user.getId());
-                Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_to_fragment_search_profile , args);
+                Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_to_fragment_search_profile, args);
             }
         });
         mSearchBar = view.findViewById(R.id.search_bar);

@@ -17,12 +17,13 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class ProfilePhotoAdapter extends RecyclerView.Adapter<ProfilePhotoAdapter.viewHolder>{
+public class ProfilePhotoAdapter extends RecyclerView.Adapter<ProfilePhotoAdapter.viewHolder> {
     private static final String TAG = ProfilePhotoAdapter.class.toString();
     private final List<Post> mPostList;
     private final Context mContext;
-    private OnItemCustomClickListner<Post> listner;
-    public ProfilePhotoAdapter(Context mContext, List<Post> mPostList , OnItemCustomClickListner<Post> listner) {
+    private final OnItemCustomClickListner<Post> listner;
+
+    public ProfilePhotoAdapter(Context mContext, List<Post> mPostList, OnItemCustomClickListner<Post> listner) {
         this.mPostList = mPostList;
         this.mContext = mContext;
         this.listner = listner;
@@ -39,7 +40,7 @@ public class ProfilePhotoAdapter extends RecyclerView.Adapter<ProfilePhotoAdapte
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         Post post = mPostList.get(position);
         Log.d(TAG, " Post updated");
-        holder.bind(post , listner);
+        holder.bind(post, listner);
         Glide.with(holder.itemView).load(post.getImageUrl()).into(holder.imageView);
     }
 

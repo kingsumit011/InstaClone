@@ -135,7 +135,7 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         pd.show();
         if (imageUri != null) {
             StorageReference filePath = FirebaseStorage.getInstance().getReference("Posts").child(System.currentTimeMillis() + "." + getFileExtention(imageUri));
-             filePath.putFile(imageUri).continueWithTask(task -> {
+            filePath.putFile(imageUri).continueWithTask(task -> {
                 if (!task.isSuccessful()) {
                     throw task.getException();
                 }

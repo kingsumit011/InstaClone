@@ -92,7 +92,7 @@ public class PostZoomFragment extends Fragment {
         mRecycleView.setLayoutManager(layoutManager);
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true , view);
+        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true, view);
         mRecycleView.setAdapter(mPostAdapter);
 
     }
