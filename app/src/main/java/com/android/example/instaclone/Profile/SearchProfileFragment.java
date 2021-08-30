@@ -1,6 +1,5 @@
 package com.android.example.instaclone.Profile;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -165,6 +166,19 @@ public class SearchProfileFragment extends Fragment {
                 //TODO
             }
         });
+        followerCount.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("User",userId);
+            bundle.putString("List","Followers");
+            Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_profile_to_fragment_FollowersFollowing , bundle);
+        });
+
+        followCount.setOnClickListener((v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("User",userId);
+            bundle.putString("List","Following");
+            Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_profile_to_fragment_FollowersFollowing , bundle);
+        }));
     }
 
     private void init(View view) {
@@ -186,9 +200,8 @@ public class SearchProfileFragment extends Fragment {
                 Bundle args = new Bundle();
                 args.putString("key", user.getPublisher());
                 args.putString("position" , user.getPostId());
-                Fragment fragment = new PostZoomFragment();
-                fragment.setArguments(args);
-                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+                Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_profile_to_fragment_profile_post, args);
+
             }
 
         });

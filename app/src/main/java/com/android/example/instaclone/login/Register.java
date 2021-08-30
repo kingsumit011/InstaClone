@@ -9,15 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.example.instaclone.Model.User;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.StartActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -64,7 +61,7 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
-
+            //TODO
 //        signInGoogle.setOnClickListener((new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -102,29 +99,30 @@ public class Register extends AppCompatActivity {
                 map.put("id" , myAuth.getCurrentUser().getUid());
                 map.put("bio","");
                 map.put("profileimg",R.drawable.ic_action_person);
-                myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        pd.dismiss();
-                        if(task.isSuccessful()){
+                User user = new User(
+                        userName.toString(),
+                        "Hello " + userName.toString() + " Here",
+                        emailId.toString(),
+                        myAuth.getCurrentUser().getUid().toString(),
+                        "https://image.flaticon.com/icons/png/512/21/21104.png"
+                );
+                myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task ->  {
+                    pd.dismiss();
+                    if(task.isSuccessful()){
 
-                            Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Register.this , StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                            finsh();
-                        }
+                        Toast.makeText(Register.this, "ID crated , Update profile", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Register.this , StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        finsh();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        pd.dismiss();
-                        Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                }).addOnFailureListener(e -> {
+                    pd.dismiss();
+                    Toast.makeText(Register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
         });
     }
 
     private void finsh() {
-//        myAuth.signOut();
+        myAuth.signOut();
     }
 }

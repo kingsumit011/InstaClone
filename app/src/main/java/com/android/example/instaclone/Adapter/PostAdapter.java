@@ -1,9 +1,10 @@
 package com.android.example.instaclone.Adapter;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.example.instaclone.ListDisplay.CommentActivity;
 import com.android.example.instaclone.Model.Post;
-import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,15 +38,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     private final boolean isFragment;
     private FirebaseUser firebaseUser;
     private long postDoubleClickLastTime;
-    private Activity mActivity;
+    private final Activity mActivity;
+    private final View view;
 
 
-    public PostAdapter(Context mContext, List<Post> mPostList, Activity mActivity ,boolean isFragment) {
+    public PostAdapter(Context mContext, List<Post> mPostList, Activity mActivity, boolean isFragment, View view) {
         this.mContext = mContext;
         this.mPostList = mPostList;
         this.isFragment = isFragment;
         postDoubleClickLastTime = 0;
         this.mActivity = mActivity;
+        this.view = view;
     }
 
     @NonNull
@@ -63,6 +66,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         holder.postDescription.setText(post.getDescription());
         holder.postTime.setText(post.getTimeDiff());
         Glide.with(holder.itemView).load(post.getImageUrl()).into(holder.postCon);
+
         String publisherID = post.getPublisher();
 
         FirebaseDatabase.getInstance().getReference().child("User").child(publisherID).addValueEventListener(new ValueEventListener() {
@@ -79,15 +83,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         });
 
         holder.postUserName.setOnClickListener(v -> {
-            if(post.getPublisher().equals(firebaseUser.getUid())){
+            if (post.getPublisher().equals(firebaseUser.getUid())) {
                 Toast.makeText(mActivity.getApplicationContext(), "Yoc can't see your own Profile here \n Go to Profile menu", Toast.LENGTH_SHORT).show();
                 return;
             }
             Bundle args = new Bundle();
             args.putString("key", post.getPublisher());
-            Fragment fragment = new SearchProfileFragment();
-            fragment.setArguments(args);
-            mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+            Navigation.findNavController(view).navigate(R.id.action_fragment_home_to_fragment_search_profile, args);
+
         });
 
         FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
@@ -113,7 +116,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         FirebaseDatabase.getInstance().getReference().child("Comment").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                holder.postCountComment.setText(snapshot.getChildrenCount() + (snapshot.getChildrenCount() >1 ?" Comments" : " Comment"));
+                holder.postCountComment.setText(snapshot.getChildrenCount() + (snapshot.getChildrenCount() > 1 ? " Comments" : " Comment"));
             }
 
             @Override
@@ -144,11 +147,83 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         });
 
         holder.postCommentButton.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext , CommentActivity.class);
-            intent.putExtra("PostId" , post.getPostId());
-            intent.putExtra("Publisher" , post.getPublisher());
-            mContext.startActivity(intent);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("PostId" , post.getPostId());
+            bundle.putString("Publisher" , post.getPublisher());
+            Navigation.findNavController(view).navigate(R.id.action_fragment_home_to_fragment_Comment , bundle);
         });
+
+        holder.setting.setOnClickListener(v -> {
+
+            PopupMenu popup = new PopupMenu(mContext, holder.setting);
+            popup.inflate(R.menu.post_menu);
+            if (!post.getPublisher().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                popup.getMenu().findItem(R.id.delete_post).setEnabled(false);
+            }
+            popup.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.delete_post:
+                        postDelete(post);
+                        return true;
+                    case R.id.share_post:
+                        shareImage(post);
+                        return true;
+                    default:
+                        return false;
+                }
+
+            });
+            popup.show();
+        });
+
+    }
+
+    private void shareImage(Post post) {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
+//        Bitmap theBitmap = Glide.
+//                with(mContext).
+//                load("http://....").
+//                asBitmap().
+//                into(100, 100). // Width and height
+//                get();
+//        Glide.with(mContext).load(Uri.parse(post.getImageUrl())).into(
+//                new CustomTarget<Drawable>() {
+//                    @Override
+//                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                        shareIntent.putExtra(Intent.EXTRA_STREAM, "android.resource://" + mActivity.getPackageName()
+//                                + resource + "ic_launcher");
+//
+//                    }
+//
+//                    @Override
+//                    public void onLoadCleared(@Nullable Drawable placeholder) {
+//
+//                    }
+//                }
+//        );
+        shareIntent.putExtra(Intent.EXTRA_STREAM , Uri.parse(post.getImageUrl()));
+        shareIntent.setType("image/*");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        mActivity.startActivity(Intent.createChooser(shareIntent, "send"));
+    }
+
+    private void postDelete(Post post) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Delete Post");
+        builder.setMessage("Are you Sure ? ");
+
+        builder.setPositiveButton("Yse", (dialog, which) -> {
+            FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostId()).removeValue();
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("NO", ((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        builder.show();
+        builder.create();
     }
 
 
@@ -158,9 +233,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        private ImageView postProfilePhoto, postCon, postCommentButton, postLikeButton, likeanimation;
+        private ImageView postProfilePhoto, postCon, postCommentButton, postLikeButton, likeanimation, setting;
 
-        private TextView postUserName, postDescription, postCountLike, postTime , postCountComment;
+        private TextView postUserName, postDescription, postCountLike, postTime, postCountComment;
         private boolean isLiked;
 
         public viewHolder(@NonNull View itemView) {
@@ -180,6 +255,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             postTime = itemView.findViewById(R.id.post_time);
             postCountComment = itemView.findViewById(R.id.post_no_user_comment);
             isLiked = false;
+            setting = itemView.findViewById(R.id.post_title_setting);
         }
     }
 }

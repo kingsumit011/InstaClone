@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.example.instaclone.login.LoginPage;
 import com.android.example.instaclone.login.Register;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 //import android.support.*;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        startActivity(new Intent());
 //        FirebaseApp.initializeApp(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         if(FirebaseAuth.getInstance().getCurrentUser()!= null){
             startActivity(new Intent(MainActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -27,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        if(FirebaseAuth.getInstance().getCurrentUser()!= null){
-                startActivity(new Intent(MainActivity.this, StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        }
 
         Button login = (Button)findViewById(R.id.Login_main);
         Button register = (Button)findViewById(R.id.SignIn_main);

@@ -1,6 +1,5 @@
 package com.android.example.instaclone.search;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,12 +13,13 @@ import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.example.instaclone.Adapter.UserAdapter;
 import com.android.example.instaclone.Model.User;
-import com.android.example.instaclone.Profile.SearchProfileFragment;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.utils.OnItemCustomClickListner;
 import com.google.firebase.auth.FirebaseAuth;
@@ -128,9 +128,7 @@ public class SearchFragment extends Fragment {
                 }
                 Bundle args = new Bundle();
                 args.putString("key", user.getId());
-                Fragment fragment = new SearchProfileFragment();
-                fragment.setArguments(args);
-                getActivity().getFragmentManager().beginTransaction().replace(R.id.fragment_container_view_tag, fragment).commit();
+                Navigation.findNavController(getView()).navigate(R.id.action_fragment_search_to_fragment_search_profile , args);
             }
         });
         mSearchBar = view.findViewById(R.id.search_bar);

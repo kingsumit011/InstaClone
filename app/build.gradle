@@ -70,8 +70,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.1.2'
-//
-//    implementation "com.hendraanggrian.appcompat:socialview:$version" // base library
-//    implementation "com.hendraanggrian.appcompat:socialview-commons:$version" // auto-complete hashtag and mention
+
 }
 

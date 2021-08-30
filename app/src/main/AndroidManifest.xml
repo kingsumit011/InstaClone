@@ -15,10 +15,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstaClone">
         <activity
-            android:name=".ListDisplay.CommentActivity"
+            android:name=".StartActivity"
             android:exported="true"
-            android:label="@string/title_activity_comment_acticity"
-            android:theme="@style/Theme.InstaClone.NoActionBar" />
+            android:theme="@style/Theme.InstaClone.NoActionBar"/>
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".add.EditProfileDetails"
             android:exported="true" />
@@ -38,17 +45,6 @@
             android:exported="true"
             android:label="@string/title_activity_comment_acticity"
             android:theme="@style/Theme.InstaClone.NoActionBar" />
-        <activity
-            android:name=".StartActivity"
-            android:exported="true"
-            android:theme="@style/Theme.InstaClone.NoActionBar" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".login.Register"
             android:screenOrientation="portrait">

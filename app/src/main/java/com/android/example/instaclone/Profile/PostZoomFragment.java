@@ -1,13 +1,14 @@
 package com.android.example.instaclone.Profile;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,9 +68,12 @@ public class PostZoomFragment extends Fragment {
                 }
 
                 mPostAdapter.notifyDataSetChanged();
-                //TODO
-//                Log.d(TAG , "Post Found At position "+ position);
-//                mRecycleView.smoothScrollToPosition(position);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRecycleView.getLayoutManager().scrollToPosition(position);
+                    }
+                }, 200);
 
 
             }
@@ -88,7 +92,7 @@ public class PostZoomFragment extends Fragment {
         mRecycleView.setLayoutManager(layoutManager);
 
         mPost = new ArrayList<>();
-        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true);
+        mPostAdapter = new PostAdapter(getContext(), mPost, getActivity(), true , view);
         mRecycleView.setAdapter(mPostAdapter);
 
     }

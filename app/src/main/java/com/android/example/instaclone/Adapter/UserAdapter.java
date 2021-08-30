@@ -1,6 +1,5 @@
 package com.android.example.instaclone.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +29,13 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
     private static final String TAG = UserAdapter.class.toString();
-    private Context mContext;
-    private List<User> mUserList;
-    private boolean isFragment;
+    private final Context mContext;
+    private final List<User> mUserList;
+    private final boolean isFragment;
     private FirebaseUser firebaseUser;
-    private OnItemCustomClickListner<User> listner;
-    public UserAdapter(Context mContext, List<User> mUserList, boolean isFragment , OnItemCustomClickListner<User> listner ) {
+    private final OnItemCustomClickListner<User> listner;
+
+    public UserAdapter(Context mContext, List<User> mUserList, boolean isFragment, OnItemCustomClickListner<User> listner) {
         this.mContext = mContext;
         this.mUserList = mUserList;
         this.isFragment = isFragment;
@@ -52,7 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        holder.bind(mUserList.get(position),listner);
+        holder.bind(mUserList.get(position), listner);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final User user = mUserList.get(position);
         holder.follow.setVisibility(View.VISIBLE);
@@ -60,7 +60,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
 
         Glide.with(holder.itemView).load(user.getProfileimg()).into(holder.userProfilePhoto);
         isFollowed(user.getId(), holder.follow);
-        if (user.getId().equals(firebaseUser.getUid())) {
+        if (user.getId().equals(firebaseUser.getUid()) || !isFragment) {
             holder.follow.setVisibility(View.GONE);
         }
         holder.follow.setOnClickListener(v -> {
@@ -123,7 +123,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.viewHolder> {
             searchBar = view.findViewById(R.id.search_bar);
         }
 
-        public void bind( User item, OnItemCustomClickListner listener) {
+        public void bind(User item, OnItemCustomClickListner listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

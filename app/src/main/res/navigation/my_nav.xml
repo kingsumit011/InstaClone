@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/fragment_home">
+
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="com.android.example.instaclone.home.HomeFragment"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_Comment"
+            app:destination="@id/fragment_Comment" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_search_profile"
+            app:destination="@id/fragment_search_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.android.example.instaclone.search.SearchFragment"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_fragment_search_to_fragment_search_profile"
+            app:destination="@id/fragment_search_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.android.example.instaclone.Profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_profile_post"
+            app:destination="@id/fragment_profile_post" />
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_FollowersFollowing"
+            app:destination="@id/fragment_FollowersFollowing" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_search_profile"
+        android:name="com.android.example.instaclone.Profile.SearchProfileFragment"
+        tools:layout="@layout/fragment_search_profile" >
+        <action
+            android:id="@+id/action_fragment_search_profile_to_fragment_FollowersFollowing"
+            app:destination="@id/fragment_FollowersFollowing" />
+        <action
+            android:id="@+id/action_fragment_search_profile_to_fragment_profile_post"
+            app:destination="@id/fragment_profile_post" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_profile_post"
+        android:name="com.android.example.instaclone.Profile.PostZoomFragment"
+        tools:layout="@layout/fragment_post_zoom" >
+        <action
+            android:id="@+id/action_fragment_profile_post_to_fragment_profile"
+            app:destination="@id/fragment_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_notification"
+        android:name="com.android.example.instaclone.notification.NotificationFragment"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/fragment_FollowersFollowing"
+        android:name="com.android.example.instaclone.ListDisplay.FollowerFollowing"
+        tools:layout="@layout/fragment_follower_following" >
+        <action
+            android:id="@+id/action_fragment_FollowersFollowing_to_fragment_search_profile"
+            app:destination="@id/fragment_search_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_Comment"
+        android:name="com.android.example.instaclone.ListDisplay.Comment"
+        tools:layout="@layout/fragment_comment" >
+        <action
+            android:id="@+id/action_fragment_Comment_to_fragment_home"
+            app:destination="@id/fragment_home" />
+    </fragment>
+    <activity
+        android:id="@+id/postActivity"
+        android:name="com.android.example.instaclone.add.PostActivity"
+        android:label="PostActivity" />
+
+    <!--    <fragment-->
+<!--        android:id="@+id/fragment_"-->
+<!--        android:name="com.android.example.instaclone."-->
+<!--        tools:layout="@layout/fragment_" />-->
+
+
+</navigation>

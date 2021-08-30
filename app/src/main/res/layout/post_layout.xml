@@ -19,7 +19,7 @@
             android:id="@+id/post_profile_photo"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/postUserName"
@@ -101,6 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp" />
+
     <TextView
         android:id="@+id/post_no_user_comment"
         android:layout_width="match_parent"
