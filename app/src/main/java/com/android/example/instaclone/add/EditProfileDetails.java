@@ -29,6 +29,7 @@ import com.kroegerama.imgpicker.BottomSheetImagePicker;
 import com.kroegerama.imgpicker.ButtonType;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EditProfileDetails extends AppCompatActivity implements BottomSheetImagePicker.OnImagesSelectedListener {
     private static final String TAG = EditProfileDetails.class.toString();
@@ -53,7 +54,7 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
                 User user = snapshot.getValue(User.class);
                 userName.setText(user.getUserName());
 
-                Glide.with(EditProfileDetails.this).load(Uri.parse(user.getProfileimg())).into(profilePhoto);
+                Glide.with(getApplicationContext()).load(Uri.parse(user.getProfileimg())).into(profilePhoto);
                 bio.setText(user.getBio());
             }
 
@@ -130,7 +131,7 @@ public class EditProfileDetails extends AppCompatActivity implements BottomSheet
         bio = findViewById(R.id.profile_bio);
         profilePhoto = findViewById(R.id.profile_img);
         saveButton = findViewById(R.id.profile_save_button);
-        userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         profileimgUrl = null;
 
     }

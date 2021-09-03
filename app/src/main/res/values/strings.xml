@@ -23,7 +23,7 @@
     <string name="posts">Posts</string>
     <string name="edit_bio_data">Edit Bio Data</string>
     <string name="post">Post</string>
-    <string name="file_provider" translatable="false">com.android.example.instaclone</string>
+    <string name="file_provider" translatable="false">com.android.example.instaclone.fileprovider</string>
 
     <string name="pick_single">Please select your image</string>
     <string name="follow">Follow</string>
@@ -63,6 +63,9 @@
     <string name="delete_post">Delete Post</string>
     <string name="share_post">Share Post</string>
     <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+    //Google Signin
 
+    <string name="web_client_id">812562114581-pfnubf3t3lta0plr4nj21kcl9abfgq52.apps.googleusercontent.com</string>
 
 </resources>

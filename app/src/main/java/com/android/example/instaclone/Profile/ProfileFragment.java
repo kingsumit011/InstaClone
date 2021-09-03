@@ -1,5 +1,6 @@
 package com.android.example.instaclone.Profile;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.example.instaclone.Adapter.ProfilePhotoAdapter;
 import com.android.example.instaclone.MainActivity;
 import com.android.example.instaclone.Model.Post;
+import com.android.example.instaclone.Model.User;
 import com.android.example.instaclone.R;
 import com.android.example.instaclone.add.EditProfileDetails;
 import com.android.example.instaclone.utils.OnItemCustomClickListner;
@@ -52,26 +54,13 @@ public class ProfileFragment extends Fragment {
     private ProfilePhotoAdapter adapter;
     private Toolbar toolbar;
     private ActionMenuView menu;
-
+    private User user;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         toolbar = view.findViewById(R.id.toolBar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        //TODO
-//        menu = view.findViewById(R.id.profile_menu);
-//        menu.setActivated(true);
-//        menu.setOnMenuItemClickListener(item -> {
-//            int itemId = item.getItemId();
-//            switch (itemId){
-//                case R.id.signOUT:
-//                    FirebaseAuth.getInstance().signOut();
-//                    startActivity(new Intent(getContext() , MainActivity.class));
-//                    break;
-//            }
-//            return true;
-//        });
         init(view);
         initWidget(view);
         updatePage(view);
@@ -93,8 +82,67 @@ public class ProfileFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getContext(), MainActivity.class));
                 break;
+            case R.id.action_delete:
+                deleteAccount();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAccount() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Delete Account");
+        builder.setMessage("Are you Sure ? ");
+
+        builder.setPositiveButton("YES", (dialog, which) -> {
+            FirebaseDatabase.getInstance().getReference().child("Posts").orderByChild("publisher").equalTo(user.getId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        FirebaseDatabase.getInstance().getReference().child("Posts").child(snapshot1.getKey().toString()).removeValue();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError e) {
+                    Log.e(TAG, " Error : " + e);
+                }
+            });
+            FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).child("Followers").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren())
+                        FirebaseDatabase.getInstance().getReference().child("follow").child(snapshot1.getKey()).child("Following").child(user.getId()).removeValue();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).child("Following").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1 : snapshot.getChildren())
+                        FirebaseDatabase.getInstance().getReference().child("follow").child(snapshot1.getKey()).child("Followers").child(user.getId()).removeValue();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            FirebaseDatabase.getInstance().getReference().child("Follow").child(user.getId()).removeValue();
+
+            FirebaseDatabase.getInstance().getReference().child("User").child(user.getId()).removeValue();
+            dialog.dismiss();
+            FirebaseAuth.getInstance().getCurrentUser().delete().addOnSuccessListener(unused -> {
+                startActivity(new Intent(getContext(), MainActivity.class));
+            });
+        }).setNegativeButton("NO", ((dialog, which) -> {
+            dialog.dismiss();
+        }));
+        builder.show();
     }
 
     private void updatePage(View view) {
@@ -104,6 +152,7 @@ public class ProfileFragment extends Fragment {
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
                 bio_view.setText(String.valueOf(snapshot.child("bio").getValue()));
                 userName.setText(String.valueOf(snapshot.child("userName").getValue()));
                 Glide.with(view).load(Uri.parse(String.valueOf(snapshot.child("profileimg").getValue()))).into(profileImg);

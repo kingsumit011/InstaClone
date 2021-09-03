@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal">
+    tools:context=".login.FragmentSignIn">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
@@ -21,16 +22,24 @@
             android:textColor="@color/Title"
             android:textSize="60sp" />
 
-
         <EditText
             android:id="@+id/Input_Email_ID"
             style="@style/input"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#fafafa"
+
             android:hint="@string/email_address"
-            android:inputType="textEmailAddress"
-            android:lines="1" />
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/Input_User_Name"
+            style="@style/input"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#fafafa"
+            android:hint="@string/user_name"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/Input_Password"
@@ -38,41 +47,23 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="#fafafa"
+
             android:hint="@string/password"
             android:inputType="textPassword" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/Login"
-                style="@style/input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="50dp"
-                android:text="@string/login" />
-
-            <Button
-                android:id="@+id/SignIn"
-                style="@style/input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/signin" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/forgot_PassWord"
+        <Button
+            android:id="@+id/SignIn"
             style="@style/input"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/forgot_password"
-            android:textColor="@color/blue"
-            android:textSize="15sp" />
+            android:text="@string/signin" />
+
+        <Button
+            android:id="@+id/sign_in_google"
+            style="@style/input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SignInByGoogle" />
     </LinearLayout>
 
-</RelativeLayout>
+</FrameLayout>

@@ -14,17 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InstaClone">
+        <activity android:name=".MyFirebaseApp">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".StartActivity"
             android:exported="true"
             android:theme="@style/Theme.InstaClone.NoActionBar" />
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".add.EditProfileDetails"
@@ -43,18 +48,9 @@
         <activity
             android:name=".add.PostActivity"
             android:exported="true"
+
             android:label="@string/title_activity_comment_acticity"
             android:theme="@style/Theme.InstaClone.NoActionBar" />
-        <activity
-            android:name=".login.Register"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-        <activity
-            android:name=".login.LoginPage"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

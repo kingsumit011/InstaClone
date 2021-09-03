@@ -93,7 +93,6 @@ public class PostActivity extends AppCompatActivity implements BottomSheetImageP
         FirebaseDatabase.getInstance().getReference().child("User").child(profileId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user = snapshot.getClass(User.class);
                 String userName = String.valueOf(snapshot.child("userName").getValue());
                 postUserName.setText(userName);
                 Uri profileUri = Uri.parse(String.valueOf(snapshot.child("profileimg").getValue()));

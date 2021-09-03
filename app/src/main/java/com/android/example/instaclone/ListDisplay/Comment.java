@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,8 +45,7 @@ public class Comment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
@@ -66,7 +64,8 @@ public class Comment extends Fragment {
         FirebaseDatabase.getInstance().getReference().child("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Glide.with(Comment.this).load(Uri.parse(snapshot.child("profileimg").getValue().toString())).into(userImage);
+                if (getActivity() != null)
+                    Glide.with(getContext()).load(Uri.parse(snapshot.child("profileimg").getValue().toString())).into(userImage);
             }
 
             @Override
@@ -101,8 +100,8 @@ public class Comment extends Fragment {
             uploadComment();
         });
         backButton.setOnClickListener(v -> {
-            Navigation.findNavController(getView()).navigate(R.id.action_fragment_home_to_fragment_Comment);
-
+            getParentFragmentManager().beginTransaction().remove(Comment.this).commit();
+            getActivity().onBackPressed();
         });
     }
 

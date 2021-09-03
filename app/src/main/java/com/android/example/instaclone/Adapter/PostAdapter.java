@@ -4,21 +4,27 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.FileProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.example.instaclone.BuildConfig;
 import com.android.example.instaclone.Model.Post;
 import com.android.example.instaclone.R;
 import com.bumptech.glide.Glide;
@@ -28,7 +34,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
@@ -73,7 +84,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 holder.postUserName.setText(String.valueOf(snapshot.child("userName").getValue()));
-                Glide.with(holder.itemView).load(snapshot.child("profileimg").getValue()).into(holder.postProfilePhoto);
+                Glide.with(mContext).load(snapshot.child("profileimg").getValue()).into(holder.postProfilePhoto);
             }
 
             @Override
@@ -96,19 +107,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         FirebaseDatabase.getInstance().getReference().child("Likes").child(post.getPostId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(firebaseUser.getUid()).exists()) {
+                if (snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).exists()) {
                     holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_red_24);
                     holder.isLiked = true;
                 } else {
                     holder.postLikeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
                     holder.isLiked = false;
                 }
+                Log.d(TAG, " post " + holder.isLiked);
                 String likeCount = snapshot.getChildrenCount() + (snapshot.getChildrenCount() > 1 ? " Likes" : " Like");
                 holder.postCountLike.setText(likeCount);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Error: " + error);
 
             }
         });
@@ -167,7 +180,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
                         postDelete(post);
                         return true;
                     case R.id.share_post:
-                        shareImage(post);
+                        try {
+                            shareImage(post, holder.postCon);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         return true;
                     default:
                         return false;
@@ -179,15 +196,65 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
     }
 
-    private void shareImage(Post post) {
+    private void shareImage(Post post, ImageView content) throws IOException {
+
+
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
-//
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(post.getImageUrl()));
-        shareIntent.setType("image/**");
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        mActivity.startActivity(Intent.createChooser(shareIntent, "send"));
+        final Uri[] uri1 = new Uri[1];
+        FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostId()).child("publisher").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                uri1[0] = Uri.parse(snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        StorageReference islandRef = FirebaseStorage.getInstance().getReference().child("Posts/1629358330474.jpg");
+
+        File localFile = File.createTempFile("images", "jpg");
+
+        islandRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+
+            // Local temp file has been created
+            Bitmap myImage = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+
+            String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File myDir = new File(root + "/saved_images");
+
+            Log.i("Directory", "==" + myDir);
+            myDir.mkdirs();
+
+            String fname = post.getPostId() + ".jpg";
+            File file = new File(myDir, fname);
+            if (file.exists()) file.delete();
+
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                myImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                out.flush();
+                out.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+            String type = mime.getMimeTypeFromExtension(ext);
+            shareIntent.putExtra(Intent.EXTRA_STREAM,
+                    FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".fileprovider",  file));
+            shareIntent.setType(type);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
+            mActivity.startActivity(Intent.createChooser(shareIntent, "Share using"));
+        }).addOnFailureListener(exception -> {
+            // Handle any errors
+            Log.d(TAG , "error : " + exception);
+        });
+        Log.d("Post", String.valueOf(uri1[0]));
     }
 
     private void postDelete(Post post) {
@@ -195,7 +262,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         builder.setTitle("Delete Post");
         builder.setMessage("Are you Sure ? ");
 
-        builder.setPositiveButton("Yse", (dialog, which) -> {
+        builder.setPositiveButton("YES", (dialog, which) -> {
             FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostId()).removeValue();
             dialog.dismiss();
         });
@@ -203,7 +270,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
             dialog.dismiss();
         }));
         builder.show();
-        builder.create();
+
     }
 
 

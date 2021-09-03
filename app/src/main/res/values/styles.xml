@@ -17,6 +17,12 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
     </style>
 
+    <style name="login_bottom_bar">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="posttitle">
         <item name="android:layout_centerVertical">true</item>
         <item name="android:paddingTop">10dp</item>
