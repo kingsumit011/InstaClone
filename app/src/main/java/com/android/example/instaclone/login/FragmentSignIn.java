@@ -34,8 +34,11 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
@@ -108,7 +111,6 @@ public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnec
         FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
             if (firebaseAuth.getCurrentUser() != null) {
                 startActivity(new Intent(getContext(), StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                finsh();
             }
         });
 
@@ -142,17 +144,6 @@ public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnec
         myAuth.signInWithCredential(credential).addOnCompleteListener((Activity) getContext(), task -> {
             Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
             if (task.isSuccessful()) {
-                user.setId(myAuth.getCurrentUser().getUid());
-                myRef.child("User").child(myAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()) {
-
-                        Toast.makeText(getContext(), "ID crated , Update profile", Toast.LENGTH_SHORT).show();
-                        finsh();
-                    }
-                }).addOnFailureListener(e -> {
-
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
                 Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
             } else {
@@ -160,7 +151,34 @@ public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnec
                 task.getException().printStackTrace();
                 Toast.makeText(getContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
             }
+        }).addOnSuccessListener(authResult -> {
+            String userID = authResult.getUser().getUid();
 
+            final boolean[] userexist = new boolean[1];
+            myRef.child("User").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userexist[0] = snapshot.child(userID).exists();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            if(!userexist[0]) {
+                user.setId(userID);
+
+                myRef.child("User").child(userID).setValue(user).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Log.d(TAG, "user added || updated");
+//                        Toast.makeText(getContext(), "ID crated , Update profile", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> {
+
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
         });
     }
 
@@ -184,10 +202,7 @@ public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnec
                     pd.dismiss();
                     if (task.isSuccessful()) {
                         pd.dismiss();
-                        startActivity(new Intent(getContext(), StartActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
-
                         Toast.makeText(getContext(), "ID crated , Update profile", Toast.LENGTH_SHORT).show();
-                        finsh();
                     }
                 }).addOnFailureListener(e -> {
                     pd.dismiss();
@@ -205,9 +220,6 @@ public class FragmentSignIn extends Fragment implements GoogleApiClient.OnConnec
     }
 
 
-    private void finsh() {
-        myAuth.signOut();
-    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -1,30 +1,31 @@
 package com.android.example.instaclone.Adapter;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.core.content.FileProvider;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.example.instaclone.BuildConfig;
 import com.android.example.instaclone.Model.Post;
 import com.android.example.instaclone.R;
 import com.bumptech.glide.Glide;
@@ -37,8 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     private final View view;
     private FirebaseUser firebaseUser;
     private long postDoubleClickLastTime;
-
+    private final int PERMISSION_WRITE = 0;
 
     public PostAdapter(Context mContext, List<Post> mPostList, Activity mActivity, boolean isFragment, View view) {
         this.mContext = mContext;
@@ -196,24 +197,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
     }
 
+    public boolean checkPermission() {
+        int READ_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int WRITE_EXTERNAL_PERMISSION = ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if ((READ_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+            return false;
+        }
+        if ((WRITE_EXTERNAL_PERMISSION != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_WRITE);
+            return false;
+        }
+
+        return true;
+    }
+
     private void shareImage(Post post, ImageView content) throws IOException {
 
+        if (!checkPermission()) {
+            Log.d(TAG, " Permission Not Available");
+            return;
+        }
 
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        final Uri[] uri1 = new Uri[1];
-        FirebaseDatabase.getInstance().getReference().child("Posts").child(post.getPostId()).child("publisher").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                uri1[0] = Uri.parse(snapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        StorageReference islandRef = FirebaseStorage.getInstance().getReference().child("Posts/1629358330474.jpg");
+        StorageReference islandRef = FirebaseStorage.getInstance().getReferenceFromUrl(post.getImageUrl());
 
         File localFile = File.createTempFile("images", "jpg");
 
@@ -221,41 +227,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
             // Local temp file has been created
             Bitmap myImage = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-
-            String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-            File myDir = new File(root + "/saved_images");
-
-            Log.i("Directory", "==" + myDir);
-            myDir.mkdirs();
-
-            String fname = post.getPostId() + ".jpg";
-            File file = new File(myDir, fname);
-            if (file.exists()) file.delete();
-
+            final Uri uri = getImageUri(mContext, myImage);
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.setType("image/*");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
             try {
-                FileOutputStream out = new FileOutputStream(file);
-                myImage.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                out.flush();
-                out.close();
-
+                mContext.startActivity(Intent.createChooser(shareIntent, " Share image"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            String ext = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-            String type = mime.getMimeTypeFromExtension(ext);
-            shareIntent.putExtra(Intent.EXTRA_STREAM,
-                    FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".fileprovider",  file));
-            shareIntent.setType(type);
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            shareIntent.putExtra(Intent.EXTRA_TEXT, post.getDescription());
-            mActivity.startActivity(Intent.createChooser(shareIntent, "Share using"));
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-            Log.d(TAG , "error : " + exception);
         });
-        Log.d("Post", String.valueOf(uri1[0]));
+
     }
+
 
     private void postDelete(Post post) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -273,6 +259,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
 
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Instacache", null);
+        return Uri.parse(path);
+    }
 
     @Override
     public int getItemCount() {

@@ -26,6 +26,7 @@
         <activity
             android:name=".StartActivity"
             android:exported="true"
+            android:requestLegacyExternalStorage="true"
             android:theme="@style/Theme.InstaClone.NoActionBar" />
 
         <activity android:name=".MainActivity">
