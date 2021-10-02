@@ -52,6 +52,12 @@
 
             android:label="@string/title_activity_comment_acticity"
             android:theme="@style/Theme.InstaClone.NoActionBar" />
+        <service
+            android:name=".notification.NotificationMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
